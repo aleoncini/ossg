@@ -1,0 +1,150 @@
+body {
+  padding-top: 50px;
+}
+.starter-template {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.def-zt-template {
+  max-width:500px;
+  margin: auto;
+  text-align: left;
+}
+.btn-zt-default {
+  float: left;
+  background: #424242;
+  padding: 3px;
+  text-align: center;
+  color: white;
+  width: 30%;
+  margin: 3px;
+}
+.btn-zt-default:hover {
+  background: #6e6e6e;
+  color: white;
+}
+
+.btn-search {
+  background: #424242;
+  border-radius: 0;
+  color: #fff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #1c1c1c;
+}
+.btn-search:link, .btn-search:visited {
+  color: #fff;
+}
+.btn-search:active, .btn-search:hover {
+  background: #1c1c1c;
+  color: #fff;
+}
+
+.inTheMiddle {
+  margin:0 auto;
+  width:600px;
+}
+
+table#tbl_courses {
+  border-collapse: collapse;
+  max-width:500px;
+}
+#tbl_courses tr {
+  background-color: #eee;
+  border-top: 1px solid #fff;
+}
+#tbl_courses tr:hover {
+  background-color: #ccc;
+}
+#tbl_courses th {
+  background-color: #fff;
+}
+#tbl_courses th, #example td {
+  padding: 3px 5px;
+}
+#tbl_courses td:hover {
+  cursor: pointer;
+}
+
+.hole_num {
+  font-size: 100px;
+  font-style: normal;
+  font-weight: bold;
+  vertical-align: middle;
+  text-align: center;
+  color: #203846;
+}
+.hole_info {
+  font-size: 25px;
+  font-style: normal;
+  font-weight: normal;
+  vertical-align: middle;
+  text-align: center;
+  color: #777;
+}
+.hole_str_put {
+  font-size: 36px;
+  font-style: normal;
+  font-weight: bold;
+  vertical-align: top;
+  text-align: center;
+  color: #203846;
+}
+.hole_str_put_lbl {
+  font-size: 12px;
+  font-stretch: extra-expanded;
+  font-style: normal;
+  font-weight: normal;
+  vertical-align: middle;
+  text-align: center;
+  color: #B3B3B3;
+}
+.hole_stats_val {
+  font-size: 30px;
+  font-style: normal;
+  font-weight: normal;
+  vertical-align: middle;
+  text-align: center;
+  color: #B3B3B3;
+}
+
+/* set of style for round review table */
+.round_tbl {
+  text-align: center;
+}
+.round_tbl_hrow {
+  text-align: center;
+  font-weight: bold;
+  color: #eeeeee;
+  background-color: #666666;
+}
+.round_tbl_row_title {
+  text-align: left;
+  font-weight: bold;
+}
+.round_tbl_sum {
+  text-align: center;
+  font-weight: bold;
+  color: #A30000;
+}
+.round_tbl_td_par {
+  text-align: center;
+  background-color: #bedcea;
+  font-weight: normal;
+}
+.round_tbl_td_bog {
+  text-align: center;
+  background-color: #dddddd;
+  font-weight: normal;
+}
+.round_tbl_td_brd {
+  text-align: center;
+  background-color: #eeaaaa;
+  color: #761c19;
+  font-weight: bold;
+}
+.round_tbl_td_dbg {
+  text-align: center;
+  background-color: #f4edd0;
+  font-weight: normal;
+}

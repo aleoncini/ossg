@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="page with tournaments archive list">
+    <meta name="author" content="Andrea Leoncini">
+    <meta name="keywords" value="golf, zingarotour, zingaro tour, classifica, roma">
+    <link rel="icon" href="favicon.ico">
+
+    <title>zingarotour.org - Round management</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/zt.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">zingarotour<span style="color: #A30000">.org</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- DIV Round Setup ======================================= -->
+    <div class="def-zt-template" id="round_setup">
+      <h1>New <span style="color: #A30000">Round</span></h1>
+
+      <p class="lead" id="hello_par">Hello there</p>
+
+      <div id="select_course" class="container def-zt-template">
+
+        <div class="container def-zt-template">
+          <br><p>On which course will you play?</p>
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Enter Course name..." id="inp_course_name">
+            <span class="input-group-btn">
+              <button id="btn_search_course" class="btn btn-search open-courseSelection" data-toggle="modal" data-target="#courseSelection" type="button"><span class="glyphicon glyphicon-search"></span> Search</button>
+            </span>
+          </div>
+          <br><p>what's your playing handicap?</p>
+          <select class="form-control" id="sel_phcp">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6</option>
+            <option>7</option>
+            <option>8</option>
+            <option>9</option>
+            <option>10</option>
+            <option>11</option>
+            <option>12</option>
+            <option>13</option>
+            <option>14</option>
+            <option>15</option>
+            <option>16</option>
+            <option>17</option>
+            <option selected>18</option>
+            <option>19</option>
+            <option>20</option>
+            <option>21</option>
+            <option>22</option>
+            <option>23</option>
+            <option>24</option>
+            <option>25</option>
+            <option>26</option>
+            <option>27</option>
+            <option>27</option>
+            <option>28</option>
+            <option>29</option>
+            <option>30</option>
+            <option>31</option>
+            <option>32</option>
+            <option>33</option>
+            <option>34</option>
+            <option>35</option>
+            <option>36</option>
+          </select>
+        </div>
+        <br>
+        <button type="button" class="btn btn-primary" id="btn_start_play">Start to Play</button>
+
+      </div>
+
+
+    </div>
+    <!-- DIV Round Setup === END =============================== -->
+
+  </div>
+
+  <!-- Modal window course selection -->
+  <div id="courseSelection" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3 class="modal-title">Course Selection</h3>
+        </div>
+        <div class="modal-body">
+          <h4>choose one from the list</h4>
+
+          <select class="form-control" id="sel_course_list">
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger" data-dismiss="modal" id="cancel_select_course">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-dismiss="modal" id="ok_select_course"><i class="glyphicon glyphicon-ok"></i> Ok</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+    <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- Specific page scripts -->
+  <!-- ================================================== -->
+  <script src="js/zt_utils.js"></script>
+  <script src="js/zt_recording_area.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+            getPlayerName();
+
+            $("#ok_select_course").click(function(){
+                sessionStorage.setItem("courseid", $("#sel_course_list option:selected").val());
+                sessionStorage.setItem("coursename", $("#sel_course_list option:selected").text());
+                console.log("=========> " + sessionStorage.getItem("courseid") + " ==== " + sessionStorage.getItem("coursename"));
+                $('#inp_course_name').val(sessionStorage.getItem("coursename"));
+                $('#sel_phcp').focus();
+            });
+
+            $("#sel_phcp").change(function () {
+                sessionStorage.setItem("phcp", $("#sel_phcp option:selected").text());
+            });
+
+            $("#btn_start_play").click(function(){
+                sessionStorage.setItem("phcp", $("#sel_phcp option:selected").text());
+                initRound();
+            });
+
+        });
+
+        $(document).on("click", ".open-courseSelection", function () {
+            var courseName = $('#inp_course_name').val();
+            formatModalWindowToSelectCourse(courseName);
+        });
+
+    </script>
+    <!-- ================================================== -->
+
+  </body>
+</html>

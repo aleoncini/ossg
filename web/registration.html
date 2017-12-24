@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="page with tournaments archive list">
+    <meta name="author" content="Andrea Leoncini">
+    <meta name="keywords" value="golf, zingarotour, zingaro tour, classifica, roma">
+    <link rel="icon" href="favicon.ico">
+
+    <title>zingarotour.org - Registration</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/zt.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">zingarotour<span style="color: #A30000">.org</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <h2>User Registration</h2>
+
+    <div class="container def-zt-template" id="step1_div">
+
+      <p class="lead" id="label_p">Please enter your email</p>
+
+      <div class="alert alert-info" style="display: none;" role="alert" id="email_ok_alert">
+        <strong>Valid email!</strong> You are now registered on this device. <a href="index.html" class="alert-link">Keep on playing</a>
+      </div>
+
+      <!-- DIV user email ======================================= -->
+      <div class="input-group">
+        <span class="input-group-addon" id="basic-addon1">@</span>
+        <input type="text" class="form-control" placeholder="your email..." aria-describedby="basic-addon1" id="reg_input">
+      </div>
+
+      <br>
+
+      <input type="hidden" value="" id='hidden_email'>
+      <button type="button" class="btn btn-default" id="email_go_btn">Go</button>
+      <!-- DIV user email === END =============================== -->
+
+    </div>
+
+  </div>
+
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script> -->
+
+  <!-- Specific page scripts -->
+  <!-- ================================================== -->
+  <script src="js/zt_utils.js"></script>
+  <script src="js/zt_recording_area.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+            $("#email_go_btn").click(function(){
+                var email = $("#reg_input").val();
+                if (email.indexOf('@') > -1){
+                    checkUserEmail(email);
+                } else {
+                    var name = email;
+                    email = $("#hidden_email").val();
+                    completeUserRegistration(email, name);
+                }
+            });
+        });
+
+    </script>
+    <!-- ================================================== -->
+
+  </body>
+</html>

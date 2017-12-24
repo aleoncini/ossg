@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="page with tournaments archive list">
+    <meta name="author" content="Andrea Leoncini">
+    <meta name="keywords" value="golf, zingarotour, zingaro tour, classifica, roma">
+    <link rel="icon" href="favicon.ico">
+
+    <title>zingarotour.org - Hole by hole results</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/zt.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">zingarotour<span style="color: #A30000">.org</span></a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- DIV Hole Info ======================================= -->
+    <div class="def-zt-template" id="scorecard">
+      <table id="tbl_hole">
+
+        <tr style="height: 150px">
+          <td style="width: 150px; vertical-align: middle; text-align: center">
+            <a href="#" id="prev_hole_btn"><img src="img/redprev.png"></a>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_num" id="hole_number">1</p>
+          </td>
+          <td style="width: 150px; vertical-align: middle; text-align: center">
+            <a href="#" id="next_hole_btn"><img src="img/rednext.png"></a>
+          </td>
+        </tr>
+
+        <tr style="height: 60px; border-bottom: 1px solid #B3B3B3;">
+          <td style="width: 150px;">
+            <p class="hole_info" id="hole_distance">distance</p>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_info" id="hole_par">PAR</p>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_info" id="additional_strokes"><img src="img/add_one.png"></p>
+          </td>
+        </tr>
+
+        <tr style="height: 40px">
+          <td style="width: 150px;">
+            <p class="hole_str_put_lbl">&nbsp;</p>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_str_put_lbl">STROKES</p>
+          </td>
+          <td style="width: 150px; vertical-align: middle; text-align: center">
+            <p class="hole_str_put_lbl">&nbsp;</p>
+          </td>
+        </tr>
+
+        <tr style="height: 70px; border-bottom: 1px solid #B3B3B3;">
+          <td style="width: 150px; vertical-align: top; text-align: center">
+            <a href="#" id="remove_stroke_btn"><img src="img/minusRedButton.png"></a>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_str_put" id="strokes">0</p>
+          </td>
+          <td style="width: 150px; vertical-align: top; text-align: center">
+            <a href="#" id="add_stroke_btn"><img src="img/plusRedButton.png"></a>
+          </td>
+        </tr>
+
+        <tr style="height: 40px">
+          <td style="width: 150px;">
+            <p class="hole_str_put_lbl">&nbsp;</p>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_str_put_lbl">PUTTS</p>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_str_put_lbl">&nbsp;</p>
+          </td>
+        </tr>
+
+        <tr style="height: 70px; border-bottom: 1px solid #B3B3B3;">
+          <td style="width: 150px; vertical-align: top; text-align: center">
+            <a href="#" id="remove_putt_btn"><img src="img/minusRedButton.png"></a>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_str_put" id="putts">2</p>
+          </td>
+          <td style="width: 150px; vertical-align: top; text-align: center">
+            <a href="#" id="add_putt_btn"><img src="img/plusRedButton.png"></a>
+          </td>
+        </tr>
+
+        <tr style="height: 40px">
+          <td style="width: 150px;">
+            <p class="hole_str_put_lbl">TOTAL</p>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_str_put_lbl">STABLEFORD</p>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_str_put_lbl">PROJECTION</p>
+          </td>
+        </tr>
+
+        <tr style="height: 60px; border-bottom: 1px solid #B3B3B3;">
+          <td style="width: 150px;">
+            <p class="hole_stats_val" id="total_strokes">0</p>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_stats_val" id="total_stb">2</p>
+          </td>
+          <td style="width: 150px">
+            <p class="hole_stats_val" id="stb_projection">36</p>
+          </td>
+        </tr>
+
+      </table>
+
+      <br><br>
+
+      <button type="submit" class="btn btn-primary disabled" id="save_scorecard"><i class="glyphicon glyphicon-ok"></i> Save Round</button>
+
+    </div>
+    <!-- DIV Round Setup === END =============================== -->
+
+
+  </div>
+
+
+    <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- Specific page scripts -->
+  <!-- ================================================== -->
+  <script src="js/zt_utils.js"></script>
+  <script src="js/zt_recording_area.js"></script>
+
+    <script>
+
+        $(document).ready(function(){
+            loadRoundData();
+
+            $("#prev_hole_btn").click(function(){
+                previousHole();
+            });
+            $("#next_hole_btn").click(function(){
+                nextHole();
+            });
+            $("#remove_stroke_btn").click(function(){
+                removeStroke();
+            });
+            $("#add_stroke_btn").click(function(){
+                addStroke();
+            });
+            $("#remove_putt_btn").click(function(){
+                removePutt();
+            });
+            $("#add_putt_btn").click(function(){
+                addPutt();
+            });
+            $("#save_scorecard").click(function(){
+                saveRoundScorecard();
+            });
+
+        });
+
+    </script>
+    <!-- ================================================== -->
+
+  </body>
+</html>
