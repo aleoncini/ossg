@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.beccaria</groupId>
   <artifactId>ossg</artifactId>
-  <name>WildFly Swarm Example</name>
+  <name>Open Source Social Golf</name>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
@@ -29,7 +29,7 @@
   </dependencyManagement>
 
   <build>
-    <finalName>demo</finalName>
+    <finalName>ossg</finalName>
     <plugins>
       <plugin>
         <groupId>org.wildfly.swarm</groupId>
@@ -59,6 +59,12 @@
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>jaxrs</artifactId>
+    </dependency>
+    <!-- Project dependencies -->
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>3.5.0</version>
     </dependency>
   </dependencies>
 </project>
