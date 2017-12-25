@@ -141,7 +141,7 @@
     <script>
 
         $(document).ready(function(){
-            getPlayerName();
+            getPlayerName(null,formatReviewRoundHelloPar);
 
             $("#ok_select_course").click(function(){
                 sessionStorage.setItem("courseid", $("#sel_course_list option:selected").val());

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="page with tournaments archive list">
+    <meta name="author" content="Andrea Leoncini">
+    <meta name="keywords" value="golf, zingarotour, zingaro tour, classifica, roma">
+    <link rel="icon" href="favicon.ico">
+
+    <title>zingarotour.org - Review Rounds</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/zt.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">zingarotour<span style="color: #A30000">.org</span></a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h3>Review <span style="color: #A30000">rounds</span></h3>
+
+    <!-- DIV user email ======================================= -->
+    <div class="input-group">
+        <p class="lead">Player: <span id="pname"></span></p>
+        <p class="lead">Year: <span id="yearOfEvent">2017</span> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#yearSelection" id="btn_changeYearLink">change</button></p>
+        <p class="lead">Month: <span id="monthOfEvent">all year</span> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#monthSelection" id="btn_changeMonthLink">change</button></p>
+        <input type="hidden" value="2017" id="year_hidden_value">
+        <input type="hidden" value="0" id="month_hidden_value">
+        <button type="button" class="btn btn-primary" id="btn_goto_round_list">Go</button>
+    </div>
+    <!-- DIV user email === END =============================== -->
+
+</div>
+
+<!-- Modal window for event year selection -->
+<div id="yearSelection" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Event Year Selection</h3>
+            </div>
+            <div class="modal-body">
+                <h4>choose the year you want to review rounds</h4>
+
+                <select class="form-control" id="sel_review_year">
+                    <option selected>2018</option>;
+                    <option>2017</option>;
+                    <option>2016</option>;
+                    <option>2015</option>;
+                    <option>2014</option>;
+                    <option>2013</option>;
+                    <option>2012</option>;
+                    <option>2011</option>;
+                    <option>2010</option>;
+                    <option>2009</option>;
+                    <option>2008</option>;
+                    <option>2007</option>;
+                    <option>2006</option>;
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger" data-dismiss="modal" id="cancel_select_course">Cancel</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" id="ok_select_review_year"><i class="glyphicon glyphicon-ok"></i> Ok</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- Modal window for event month selection -->
+<div id="monthSelection" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h3 class="modal-title">Month Selection</h3>
+            </div>
+            <div class="modal-body">
+                <h4>choose the month you want to review rounds</h4>
+
+                <select class="form-control" id="sel_review_month">
+                    <option value="1" selected>January</option>;
+                    <option value="2">February</option>;
+                    <option value="3">March</option>;
+                    <option value="4">April</option>;
+                    <option value="5">May</option>;
+                    <option value="6">June</option>;
+                    <option value="7">July</option>;
+                    <option value="8">August</option>;
+                    <option value="9">September</option>;
+                    <option value="10">October</option>;
+                    <option value="11">November</option>;
+                    <option value="12">December</option>;
+                </select>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger" data-dismiss="modal" id="cancel_select_review_month">Cancel</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal" id="ok_select_review_month"><i class="glyphicon glyphicon-ok"></i> Ok</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<!-- Specific page scripts -->
+<!-- ================================================== -->
+<script src="js/zt_utils.js"></script>
+<script src="js/zt_recording_area.js"></script>
+
+<script>
+
+    $(document).ready(function(){
+        getReviewPlayer();
+
+        $("#btn_changeYearLink").click(function(){
+            $('#yearSelection').show();
+        });
+        $("#btn_changeMonthLink").click(function(){
+            $('#monthSelection').show();
+        });
+        $("#ok_select_review_year").click(function(){
+            $("#year_hidden_value").val($("#sel_review_year option:selected").text());
+            $("#yearOfEvent").html($("#year_hidden_value").val());
+        });
+        $("#ok_select_review_month").click(function(){
+            $("#month_hidden_value").val($("#sel_review_month option:selected").val());
+            $("#monthOfEvent").html(getMonthName(Number($("#month_hidden_value").val())));
+        });
+        $("#btn_goto_round_list").click(function(){
+            sessionStorage.setItem("year", $("#year_hidden_value").val());
+            sessionStorage.setItem("month", $("#month_hidden_value").val());
+            window.location.href = 'roundlist.html';
+        });
+
+    });
+
+</script>
+<!-- ================================================== -->
+
+</body>
+</html>

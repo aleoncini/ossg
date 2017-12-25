@@ -44,7 +44,7 @@ function gotoUserRegistrationCheck() {
 };
 
 function checkUserEmail(email) {
-    var theUrl = '/ossg/rs/players/check/email?email=' + email;
+    var theUrl = '/rs/players/check/email?email=' + email;
     $.ajax({
         url: theUrl,
         type: 'GET',
@@ -102,8 +102,11 @@ function completeUserRegistration(email, name) {
  *  from server and put it in a session local storage.
  *  Also put the name in the salutation paragraph.
  */
-function getPlayerName() {
-    var theUrl = '/ossg/rs/players/player/' + localStorage.getItem("playerid");
+function getPlayerName(pid, callback) {
+    if ((pid == null) || (pid.length == 0)){
+        pid = localStorage.getItem("playerid");
+    }
+    var theUrl = '/rs/players/player/' + pid;
     $.ajax({
         url: theUrl,
         type: 'GET',
@@ -112,7 +115,7 @@ function getPlayerName() {
         complete: function(response, status, xhr){
             var playerData = jQuery.parseJSON(response.responseText);
             sessionStorage.setItem("playerName", playerData.name);
-            $('#hello_par').html("Hello " + playerData.name);
+            callback(playerData.name);
         }
     });
 };
@@ -124,7 +127,7 @@ function getPlayerName() {
 function formatModalWindowToSelectCourse(courseName) {
     $('#sel_course_list').hide();
     $('#sel_course_list').empty();
-    var base_url = "/ossg/rs/courses/search?name=" + courseName;
+    var base_url = "/rs/courses/search?name=" + courseName;
     $.get(base_url, function(data) {
         addCoursesToSelection(data.courses);
     });
@@ -152,7 +155,7 @@ function addCoursesToSelection(courses) {
  *  the user creates a new round this will be the current round.
  */
 function initRound() {
-    var theUrl = '/ossg/rs/rounds/init?';
+    var theUrl = '/rs/rounds/init?';
     theUrl += 'playerid=' + localStorage.getItem("playerid");
     theUrl += '&courseid=' + sessionStorage.getItem("courseid");
     theUrl += '&phcp=' + sessionStorage.getItem("phcp");
@@ -183,7 +186,7 @@ function initRound() {
  *  and then saved back to the server.
  */
 function loadRoundData() {
-    var theUrl = '/ossg/rs/rounds/round/' + localStorage.getItem("roundid");
+    var theUrl = '/rs/rounds/round/' + localStorage.getItem("roundid");
     $.ajax({
         url: theUrl,
         type: 'GET',
@@ -325,7 +328,7 @@ function formatHolePage(holeNumber, additional_strokes, strokes, putts, medal, s
 };
 function saveRoundScorecard() {
     save18thHole();
-    var theUrl = '/ossg/rs/rounds/scorecard/';
+    var theUrl = '/rs/rounds/scorecard/';
     theUrl += window.roundData.id;
     theUrl += '?phcp=' + sessionStorage.getItem("phcp");
     theUrl += '&scorecard=' + createScorecardString();
@@ -361,8 +364,11 @@ function createScorecardString() {
  *
  */
 
+function formatReviewRoundHelloPar(playername) {
+    $('#hello_par').html("Hello " + playername);
+};
 function loadCompletedRound() {
-    var theUrl = '/ossg/rs/rounds/round/' + localStorage.getItem("roundid");
+    var theUrl = '/rs/rounds/round/' + localStorage.getItem("roundid");
     $.ajax({
         url: theUrl,
         type: 'GET',
@@ -572,5 +578,45 @@ function formatStbTableCell(holeNumber){
     }
     td += '</td>';
     return td;
+};
+/**
+ *
+ *  All the functions used in the review rounds section
+ *
+ */
+function getReviewPlayer() {
+    var playerid = sessionStorage.getItem("playerid");
+    if ((playerid == null) || (playerid.length == 0)){
+        playerid = localStorage.getItem("playerid");
+        sessionStorage.setItem("playerid", playerid);
+    }
+    getPlayerName(playerid, formatReviewRoundPlayerInfo);
+};
+function formatReviewRoundPlayerInfo(playername) {
+    $("#pname").html(playername);
+};
+/* --- END Review Round ---------------------- */
+
+/**
+ *
+ *  All the functions used to format the round list page
+ *
+ */
+function getRoundListHeaderInfo() {
+    var yearToSearch = sessionStorage.getItem("year");
+    if (yearToSearch == null){
+        window.location.href = 'review.html';
+        return;
+    }
+    formatRoundListHeaderInfo(yearToSearch, sessionStorage.getItem("month"))
+};
+function formatRoundListHeaderInfo(theYear, theMonth) {
+    $("#roundListPlayerName").html(sessionStorage.getItem("playerName"));
+    $("#roundListYear").html(theYear);
+    if (Number(theMonth) == 0){
+        $("#roundListMonth").html('all months');
+    } else {
+        $("#roundListMonth").html(getMonthName(Number(theMonth)));
+    }
 };
 /* --- END Review Round ---------------------- */

@@ -15,7 +15,6 @@ public class DBTools {
     final static Logger logger = Logger.getLogger("org.ossg");
 
     public static boolean save(String collectionName, Document doc) {
-        boolean success = false;
         if (doc == null){
             return false;
         }
@@ -26,13 +25,14 @@ public class DBTools {
         try {
             MongoCollection<Document> collection = DBConfiguration.getInstance().getDatabase().getCollection(collectionName);
             collection.insertOne(doc);
-            success = true;
+            logger.info("Saved new user: " + doc.toJson());
+            return true;
         } catch (Throwable throwable) {
             StringWriter trace = new StringWriter();
             throwable.printStackTrace(new PrintWriter(trace, true));
             logger.warning(trace.toString());
         }
-        return success;
+        return false;
     }
 
     private static boolean docAlreadyExists(String collectionName, Document doc) {
