@@ -185,7 +185,7 @@ function initRound() {
  *  Data include scorecard that will be filled with the app
  *  and then saved back to the server.
  */
-function loadRoundData() {
+function loadRoundDataToPlay() {
     var theUrl = '/rs/rounds/round/' + localStorage.getItem("roundid");
     $.ajax({
         url: theUrl,
@@ -367,8 +367,8 @@ function createScorecardString() {
 function formatReviewRoundHelloPar(playername) {
     $('#hello_par').html("Hello " + playername);
 };
-function loadCompletedRound() {
-    var theUrl = '/rs/rounds/round/' + localStorage.getItem("roundid");
+function loadRoundDataForReview() {
+    var theUrl = '/rs/rounds/round/' + getRoundId();
     $.ajax({
         url: theUrl,
         type: 'GET',
@@ -444,7 +444,7 @@ function formatRound(){
     tableHeader += '</tr>';
     tableHeader += '</thead>';
 
-    var tableBody = '<tbody>';
+    tableHeader += '<tbody>';
     tableHeader += '<tr>';
     tableHeader += '<td class="round_tbl_row_title">strokes</td>';
     tableHeader += formatStrokeTableCell(1);
@@ -517,9 +517,9 @@ function formatRound(){
     tableHeader += '<td class="round_tbl_sum">' + window.results.stb_in + '</td>';
     tableHeader += '<td class="round_tbl_sum">' + (window.results.stb_out + window.results.stb_in) + '</td>';
     tableHeader += '</tr>';
-    tableBody += '</tbody>';
+    tableHeader += '</tbody>';
 
-    $("#tbl_round").html(tableHeader + tableBody);
+    $("#tbl_round").html(tableHeader);
 
 };
 /**
@@ -618,5 +618,31 @@ function formatRoundListHeaderInfo(theYear, theMonth) {
     } else {
         $("#roundListMonth").html(getMonthName(Number(theMonth)));
     }
+};
+function loadRoundsData() {
+    //var theUrl = '/rs/rounds/search?playerid=' + sessionStorage.getItem("playerid");
+    var theUrl = '/rs/rounds/search?playerid=andrea.leoncini';
+    theUrl += '&year=' + sessionStorage.getItem("year");
+    if (Number(sessionStorage.getItem("month")) > 0){
+        theUrl += '&month=' + sessionStorage.getItem("month");
+    }
+    $.get(theUrl, function(data) {
+        formatRoundListTable(data.rounds);
+    });
+};
+function formatRoundListTable(rounds) {
+    var tableContent = '<thead>';
+    tableContent += '<tr><th>ID</th><th>Date</th><th>Course</th></tr>';
+    tableContent += '</thead>';
+    tableContent += '<tbody>';
+    $.each(rounds, function (index, round) {
+        tableContent += '<tr class="goto_view_round" data-id="' + round.id + '">';
+        tableContent += '<td>' + round.id + '</td>';
+        tableContent += '<td>' + round.dayOfEvent.day + ' ' + getMonthName(Number(round.dayOfEvent.month)) + ' ' + round.dayOfEvent.year + '</td>';
+        tableContent += '<td>' + round.course.name + '</td>';
+        tableContent += '</tr>';
+    });
+    tableContent += '</tbody>';
+    $("#tbl_round_list").html(tableContent);
 };
 /* --- END Review Round ---------------------- */

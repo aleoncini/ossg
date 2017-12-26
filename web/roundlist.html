@@ -35,7 +35,7 @@
         in the period of year: <span id="roundListYear"></span>, month: <span id="roundListMonth"></span>
     </p>
 
-    <table class="table table-condensed round_tbl" id="tbl_round_list">
+    <table class="table table-condensed table-hover" id="tbl_round_list">
     </table>
 
 </div>
@@ -55,6 +55,14 @@
 
     $(document).ready(function(){
         getRoundListHeaderInfo();
+        loadRoundsData();
+    });
+
+    $(document).on("click", ".goto_view_round", function () {
+        var roundid = $(this).data('id');
+        console.log("=======> roundid from table: " + roundid);
+        var goto = 'round_review.html?roundid=' + roundid;
+        window.location.href = goto;
     });
 
 </script>

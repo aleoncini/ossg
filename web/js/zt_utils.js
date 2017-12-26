@@ -43,14 +43,12 @@ function formattedAdditionalStrokes(num) {
     }
     return ret;
 };
-
 function getUrlParameter(name) {
     name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
     var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
     var results = regex.exec(location.search);
     return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
 };
-
 function getTotalStrokes(hole_number, scorecard){
     var total = 0;
     for (i = 1; i<=hole_number; i++){
@@ -92,4 +90,24 @@ function getMonthName(monthNumber){
         default:
             return "Dic";
     }
+};
+function getPlayerId(){
+    var playerid = getUrlParameter("playerid");
+    if ((playerid == null) || (playerid.length == 0)){
+        playerid = sessionStorage.getItem("playerid");
+    }
+    if ((playerid == null) || (playerid.length == 0)){
+        playerid = localStorage.getItem("playerid");
+    }
+    return playerid;
+};
+function getRoundId(){
+    var roundid = getUrlParameter("roundid");
+    if ((roundid == null) || (roundid.length == 0)){
+        roundid = sessionStorage.getItem("roundid");
+    }
+    if ((roundid == null) || (roundid.length == 0)){
+        roundid = localStorage.getItem("roundid");
+    }
+    return roundid;
 };

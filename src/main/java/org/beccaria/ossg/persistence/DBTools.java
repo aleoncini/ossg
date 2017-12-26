@@ -85,4 +85,8 @@ public class DBTools {
         Document filter = new Document(field, Pattern.compile(text, Pattern.CASE_INSENSITIVE)); //"name",  java.util.regex.Pattern.compile(m)
         return DBConfiguration.getInstance().getDatabase().getCollection(collectionName).find(filter).iterator();
     }
+
+    public static Iterator<Document> searchByFilter(String collectionName, Document filter) {
+        return DBConfiguration.getInstance().getDatabase().getCollection(collectionName).find(filter).iterator();
+    }
 }
