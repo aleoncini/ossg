@@ -97,6 +97,20 @@ function completeUserRegistration(email, name) {
  */
 
 /**
+ *  setEventDay()
+ *  called by the modal window to select the day of round
+ *  when the user clicks on OK button.
+ */
+function setEventDay() {
+    $("#day_of_event_hidden_value").val($("#sel_day option:selected").text());
+    $("#month_of_event_hidden_value").val($("#sel_month option:selected").val());
+    $("#year_of_event_hidden_value").val($("#sel_year option:selected").text());
+    var td = $("#day_of_event_hidden_value").val();
+    td += ' ' + $("#sel_month option:selected").text();
+    td += ' ' + $("#year_of_event_hidden_value").val();
+    $("#theDay").html(td);
+};
+/**
  *  getPlayerName()
  *  Starting from persistent playerid get player name
  *  from server and put it in a session local storage.
@@ -159,6 +173,11 @@ function initRound() {
     theUrl += 'playerid=' + localStorage.getItem("playerid");
     theUrl += '&courseid=' + sessionStorage.getItem("courseid");
     theUrl += '&phcp=' + sessionStorage.getItem("phcp");
+    if (Number($("#day_of_event_hidden_value").val()) > 0){
+        theUrl += '&day=' + $("#day_of_event_hidden_value").val();
+        theUrl += '&month=' + $("#month_of_event_hidden_value").val();
+        theUrl += '&day=' + $("#year_of_event_hidden_value").val();
+    }
     $.ajax({
         url: theUrl,
         type: 'POST',

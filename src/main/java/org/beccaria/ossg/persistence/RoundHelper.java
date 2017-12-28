@@ -109,4 +109,12 @@ public class RoundHelper {
         return rounds;
     }
 
+    public boolean roundExists(String playerid, String courseid, DayOfEvent dayOfEvent){
+        Document filter = new Document("dayOfEvent",dayOfEvent)
+                .append("playerId",playerid)
+                .append("course.id",courseid);
+        Iterator<Document> docs = DBTools.searchByFilter("rounds",filter);
+        return docs.hasNext();
+    }
+
 }

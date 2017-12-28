@@ -1,9 +1,6 @@
 package org.beccaria.ossg.rest;
 
-import org.beccaria.ossg.model.ResponseInfo;
-import org.beccaria.ossg.model.Round;
-import org.beccaria.ossg.model.Score;
-import org.beccaria.ossg.model.Scorecard;
+import org.beccaria.ossg.model.*;
 import org.beccaria.ossg.persistence.RoundHelper;
 
 import javax.ws.rs.*;
@@ -63,16 +60,35 @@ public class Rounds {
     public Response initNewRound(
             @QueryParam("playerid") String playerid,
             @QueryParam("phcp") int phcp,
-            @QueryParam("courseid") String courseid){
+            @QueryParam("courseid") String courseid,
+            @QueryParam("day") int theDay,
+            @QueryParam("month") int theMonth,
+            @QueryParam("year") int theYear){
         if (playerid == null || playerid.length() == 0){
             ResponseInfo responseInfo = new ResponseInfo().setMessage("Player Id not specified.");
+            return Response.status(400).entity(responseInfo.toString()).build();
+        }
+        if (phcp == 0){
+            ResponseInfo responseInfo = new ResponseInfo().setMessage("Playing handicap not specified.");
             return Response.status(400).entity(responseInfo.toString()).build();
         }
         if (courseid == null || courseid.length() == 0){
             ResponseInfo responseInfo = new ResponseInfo().setMessage("Course Id not specified.");
             return Response.status(400).entity(responseInfo.toString()).build();
         }
-        Round round = new RoundHelper().initializeNewRound(playerid, phcp, courseid);
+        Round round = null;
+        DayOfEvent dayOfEvent = null;
+        if ((theDay > 0) && (theMonth > 0) & (theYear > 0)){
+            dayOfEvent = new DayOfEvent().setDay(theDay).setMonth(theMonth).setYear(theYear);
+        } else {
+            dayOfEvent = new DayOfEvent().today();
+        }
+        if (new RoundHelper().roundExists(playerid,courseid,dayOfEvent)){
+            ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.ERROR_STATUS)
+                    .setMessage("Found another round in the same day and the same course.");
+            return Response.status(200).entity(responseInfo.toString()).build();
+        }
+        round = new RoundHelper().initializeNewRound(playerid, phcp, courseid, dayOfEvent);
         if (round == null){
             ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS)
                     .setMessage("Unable to initialize a new round.");
