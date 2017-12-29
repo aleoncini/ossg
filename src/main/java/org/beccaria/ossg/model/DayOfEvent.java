@@ -53,6 +53,18 @@ public class DayOfEvent {
         return  buffer.toString();
     }
 
+    public String prettyPrint() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("\n{ \n");
+        buffer.append("\"day\": ").append(day);
+        buffer.append(", \n");
+        buffer.append("\"month\": ").append(month);
+        buffer.append(", \n");
+        buffer.append("\"year\": ").append(year);
+        buffer.append("\n }\n");
+        return  buffer.toString();
+    }
+
     public Document getDocument(){
         return new Document("day", this.day).append("month", this.month).append("year", this.year);
     }

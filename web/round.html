@@ -40,9 +40,12 @@
         <div class="container def-zt-template">
           <br>
           <p>When will you play? <strong><span id="theDay">today</span></strong> <button type="button" class="btn btn-link open-daySelection" data-toggle="modal" data-target="#dayOfEventSelection" id="btn_changeDayOfEvent">change</button></p>
+          <input type="hidden" value="" id="courseid_hidden_value">
           <input type="hidden" value="0" id="day_of_event_hidden_value">
           <input type="hidden" value="0" id="month_of_event_hidden_value">
           <input type="hidden" value="0" id="year_of_event_hidden_value">
+          <p>Are you playing a Tournament? <strong><span id="theTournament">NO</span></strong> <button type="button" class="btn btn-link open-tournamentSelection" data-toggle="modal" data-target="#tournamentSelection" id="btn_changeTournament">change</button></p>
+          <input type="hidden" value="" id="tournamentid_hidden_value">
           <p>On which course?</p>
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Enter Course name..." id="inp_course_name">
@@ -127,6 +130,34 @@
     </div>
   </div>
   <!-- Modal window course selection -->
+  <!-- END ------------------------- -->
+
+  <!-- Modal window Tournament selection -->
+  <div id="tournamentSelection" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3 class="modal-title">Tournament Selection</h3>
+        </div>
+        <div class="modal-body">
+          <h4>choose one from the list</h4>
+
+          <select class="form-control" id="sel_tournament_list">
+          </select>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-danger" data-dismiss="modal" id="cancel_select_tournament">Cancel</button>
+          <button type="submit" class="btn btn-primary" data-dismiss="modal" id="ok_select_tournament"><i class="glyphicon glyphicon-ok"></i> Ok</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- Modal window Tournament selection -->
   <!-- END ------------------------- -->
 
   <!-- Modal window for event day selection -->
@@ -235,7 +266,7 @@
     <script>
 
         $(document).ready(function(){
-            getPlayerName(null,formatReviewRoundHelloPar);
+            initRoundPage();
 
             $("#ok_select_day").click(function(){
                 setEventDay();
@@ -244,7 +275,6 @@
             $("#ok_select_course").click(function(){
                 sessionStorage.setItem("courseid", $("#sel_course_list option:selected").val());
                 sessionStorage.setItem("coursename", $("#sel_course_list option:selected").text());
-                console.log("=========> " + sessionStorage.getItem("courseid") + " ==== " + sessionStorage.getItem("coursename"));
                 $('#inp_course_name').val(sessionStorage.getItem("coursename"));
                 $('#sel_phcp').focus();
             });
@@ -255,7 +285,7 @@
 
             $("#btn_start_play").click(function(){
                 sessionStorage.setItem("phcp", $("#sel_phcp option:selected").text());
-                initRound();
+                checkDataToPlay();
             });
 
         });
@@ -263,6 +293,9 @@
         $(document).on("click", ".open-courseSelection", function () {
             var courseName = $('#inp_course_name').val();
             formatModalWindowToSelectCourse(courseName);
+        });
+        $(document).on("click", ".open-tournamentSelection", function () {
+            formatModalWindowToSelectTournament();
         });
 
     </script>

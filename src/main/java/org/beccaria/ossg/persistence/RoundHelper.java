@@ -110,9 +110,11 @@ public class RoundHelper {
     }
 
     public boolean roundExists(String playerid, String courseid, DayOfEvent dayOfEvent){
-        Document filter = new Document("dayOfEvent",dayOfEvent)
-                .append("playerId",playerid)
-                .append("course.id",courseid);
+        Document filter = new Document("playerId",playerid)
+                .append("course.id",courseid)
+                .append("dayOfEvent.day", dayOfEvent.getDay())
+                .append("dayOfEvent.month", dayOfEvent.getMonth())
+                .append("dayOfEvent.year", dayOfEvent.getYear());
         Iterator<Document> docs = DBTools.searchByFilter("rounds",filter);
         return docs.hasNext();
     }

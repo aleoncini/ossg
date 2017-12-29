@@ -95,7 +95,13 @@ function completeUserRegistration(email, name) {
  *  All functions required to play a round
  *
  */
-
+function initRoundPage() {
+    getPlayerName(null,formatReviewRoundHelloPar);
+    sessionStorage.setItem("courseid", "");
+    sessionStorage.setItem("coursename", "");
+    $('#courseid_hidden_value').val('');
+    $('#tournamentid_hidden_value').val('');
+};
 /**
  *  setEventDay()
  *  called by the modal window to select the day of round
@@ -161,6 +167,46 @@ function addCoursesToSelection(courses) {
     });
     $('#sel_course_list').show(1000);
 };
+
+function formatModalWindowToSelectTournament(){
+    var theUrl = '/rs/tournaments/search?';
+    if (Number($("#day_of_event_hidden_value").val()) == 0){
+        // user is playing today
+        var d = new Date();
+        var dd = d.getDay();
+        var mm = Number(d.getMonth()) + 1;
+        var yy = d.getFullYear();
+        theUrl += '&day=' + dd;
+        theUrl += '&month=' + mm;
+        theUrl += '&year=' + yy;
+    } else {
+        theUrl += '&day=' + $("#day_of_event_hidden_value").val();
+        theUrl += '&month=' + $("#month_of_event_hidden_value").val();
+        theUrl += '&year=' + $("#year_of_event_hidden_value").val();
+    }
+    $.get(theUrl, function(data) {
+        addCTournamentsToSelectionWindow(data.tournaments);
+    });
+};
+function addCTournamentsToSelectionWindow(tournaments) {
+    var sel_content = '<option value="0">select a course from list</option>';
+    $('#sel_course_list').append(sel_content);
+    $.each(courses, function (index, course) {
+        sel_content = '<option value="' + course.id + '">' + course.name + '</option>';
+        $('#sel_course_list').append(sel_content);
+    });
+    $('#sel_course_list').show(1000);
+};
+/**
+ *  checkDataToPlay()
+ *  before initializing a new round this function checks
+ *  if the user has selected the course.
+ */
+function checkDataToPlay() {
+    if($('#courseid_hidden_value').val('').length > 0){
+        initRound();
+    }
+};
 /**
  *  initRound()
  *  Initialize server side a new round.
@@ -170,13 +216,13 @@ function addCoursesToSelection(courses) {
  */
 function initRound() {
     var theUrl = '/rs/rounds/init?';
-    theUrl += 'playerid=' + localStorage.getItem("playerid");
+    theUrl += 'playerid=' + getPlayerId();
     theUrl += '&courseid=' + sessionStorage.getItem("courseid");
     theUrl += '&phcp=' + sessionStorage.getItem("phcp");
     if (Number($("#day_of_event_hidden_value").val()) > 0){
         theUrl += '&day=' + $("#day_of_event_hidden_value").val();
         theUrl += '&month=' + $("#month_of_event_hidden_value").val();
-        theUrl += '&day=' + $("#year_of_event_hidden_value").val();
+        theUrl += '&year=' + $("#year_of_event_hidden_value").val();
     }
     $.ajax({
         url: theUrl,

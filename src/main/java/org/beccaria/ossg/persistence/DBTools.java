@@ -25,7 +25,6 @@ public class DBTools {
         try {
             MongoCollection<Document> collection = DBConfiguration.getInstance().getDatabase().getCollection(collectionName);
             collection.insertOne(doc);
-            logger.info("Saved new user: " + doc.toJson());
             return true;
         } catch (Throwable throwable) {
             StringWriter trace = new StringWriter();
