@@ -34,31 +34,23 @@ public class Tournaments {
     @POST
     @Consumes("application/json")
     @Path("/add")
-    public Response addCourse(Tournament tournament){
+    public Response addTournament(Tournament tournament){
         if (new TournamentHelper().save(tournament)){
             return Response.status(200).entity("{\"result\":\"success\", \"tournamentId\":\"" + tournament.getId() + "\", \"message\":\"OK\"}").build();
         } else {
             return Response.status(200).entity("{\"result\":\"ERROR\", \"tournamentId\":\"" + tournament.getId() + "\", \"message\":\"Unable to save Tournament\"}").build();
         }
     }
+
     @GET
     @Produces("application/json")
     @Path("/search")
-    public Response search(@QueryParam("name") String name,
-                           @QueryParam("day") int day,
+    public Response search(@QueryParam("day") int day,
                            @QueryParam("month") int month,
                            @QueryParam("year") int year) {
         Collection<Tournament> tournaments = null;
 
-        if ((name != null) && (name.length() > 0)){
-            tournaments = new TournamentHelper().searchByName(name);
-        } else {
-            tournaments = new TournamentHelper().search(day,month,year);
-        }
-
-        if (tournaments.isEmpty()){
-            return Response.status(404).build();
-        }
+        tournaments = new TournamentHelper().search(day,month,year);
 
         return Response.status(200).entity(formatTournaments(tournaments)).build();
     }

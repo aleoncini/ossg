@@ -48,12 +48,12 @@ public class RoundHelper {
         return rounds;
     }
 
-    public Round initializeNewRound(String playerId, int phcp, String courseId){
+    public Round initializeNewRound(String playerId, int phcp, String courseId, String tournamentId){
         DayOfEvent dayOfEvent = new DayOfEvent().today();
-        return initializeNewRound(playerId, phcp, courseId, dayOfEvent);
+        return initializeNewRound(playerId, phcp, courseId, tournamentId, dayOfEvent);
     }
 
-    public Round initializeNewRound(String playerId, int phcp, String courseId, DayOfEvent dayOfEvent){
+    public Round initializeNewRound(String playerId, int phcp, String courseId, String tournamentId, DayOfEvent dayOfEvent){
         String id = UUID.randomUUID().toString().replace("-", "");
         Player player = new PlayerHelper().getById(playerId);
         Course course = new CourseHelper().getById(courseId);
@@ -65,6 +65,9 @@ public class RoundHelper {
                 .setPlayerName(player.getName())
                 .setCourse(course)
                 .setScorecard(scorecard);
+        if (tournamentId != null){
+            round.setType(Round.ROUND_TYPE_TOURNAMENT).setTournamentId(tournamentId);
+        }
         if (DBTools.save(COLLECTION_NAME, round.getDocument())){
             return round;
         }
@@ -98,10 +101,9 @@ public class RoundHelper {
         return new Round().build(roundDocument);
     }
 
-    public Collection<Round> searchByPlayerId(String playerId){
+    public Collection<Round> searchByFieldId(String field, String id){
         Collection<Round> rounds = new ArrayList<Round>();
-        Iterator<Document> docs = DBTools.search(COLLECTION_NAME,"playerId",playerId);
-        Course course = null;
+        Iterator<Document> docs = DBTools.search(COLLECTION_NAME,field,id);
         Document doc = null;
         while (docs.hasNext()){
             rounds.add(new Round().build(docs.next()));

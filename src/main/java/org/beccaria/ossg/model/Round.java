@@ -2,7 +2,7 @@ package org.beccaria.ossg.model;
 
 import org.bson.Document;
 
-public class Round {
+public class Round implements Comparable<Round>{
     public final static String ROUND_TYPE_TOURNAMENT = "Tournament";
     public final static String ROUND_TYPE_PRACTICE = "Practice";
 
@@ -184,5 +184,20 @@ public class Round {
         this.scorecard = new Scorecard().build(scorecardDocument);
 
         return this;
+    }
+
+    @Override
+    public int compareTo(Round other) {
+        int diff = this.getScorecard().getStableford() - other.getScorecard().getStableford();
+        if (diff == 0){
+            diff = this.getScorecard().getLastNineStableford() - other.getScorecard().getLastNineStableford();
+        }
+        if (diff == 0){
+            diff = this.getScorecard().getLastSixStableford() - other.getScorecard().getLastSixStableford();
+        }
+        if (diff == 0){
+            diff = this.getScorecard().getLastThreeStableford() - other.getScorecard().getLastThreeStableford();
+        }
+        return diff;
     }
 }

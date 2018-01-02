@@ -44,7 +44,10 @@
           <input type="hidden" value="0" id="day_of_event_hidden_value">
           <input type="hidden" value="0" id="month_of_event_hidden_value">
           <input type="hidden" value="0" id="year_of_event_hidden_value">
-          <p>Are you playing a Tournament? <strong><span id="theTournament">NO</span></strong> <button type="button" class="btn btn-link open-tournamentSelection" data-toggle="modal" data-target="#tournamentSelection" id="btn_changeTournament">change</button></p>
+          <p>Are you playing a Tournament? <strong><span id="theTournament">NO</span></strong>
+            <button type="button" class="btn btn-link open-tournamentSelection" data-toggle="modal" data-target="#tournamentSelection" id="btn_changeTournament">change</button>
+            <button type="button" class="btn btn-link" id="btn_newTournament">create</button>
+          </p>
           <input type="hidden" value="" id="tournamentid_hidden_value">
           <p>On which course?</p>
           <div class="input-group">
@@ -270,6 +273,15 @@
 
             $("#ok_select_day").click(function(){
                 setEventDay();
+            });
+
+            $("#btn_newTournament").click(function(){
+              window.location.href = "tournament.html";
+            });
+
+            $("#ok_select_tournament").click(function(){
+                $('#tournamentid_hidden_value').val($('#sel_tournament_list option:selected').val());
+                $('#theTournament').html('<br>' + $("#sel_tournament_list option:selected").text());
             });
 
             $("#ok_select_course").click(function(){

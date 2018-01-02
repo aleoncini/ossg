@@ -61,6 +61,7 @@ public class Rounds {
             @QueryParam("playerid") String playerid,
             @QueryParam("phcp") int phcp,
             @QueryParam("courseid") String courseid,
+            @QueryParam("tournamentid") String tournamentid,
             @QueryParam("day") int theDay,
             @QueryParam("month") int theMonth,
             @QueryParam("year") int theYear){
@@ -88,7 +89,7 @@ public class Rounds {
                     .setMessage("Found another round in the same day and the same course.");
             return Response.status(200).entity(responseInfo.toString()).build();
         }
-        round = new RoundHelper().initializeNewRound(playerid, phcp, courseid, dayOfEvent);
+        round = new RoundHelper().initializeNewRound(playerid, phcp, courseid, tournamentid, dayOfEvent);
         if (round == null){
             ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS)
                     .setMessage("Unable to initialize a new round.");
@@ -163,9 +164,20 @@ public class Rounds {
     @Produces("application/json")
     @Path("/byplayer/{id}")
     public Response listByPlayerId(@PathParam("id") String id) {
-        Collection<Round> rounds = new RoundHelper().searchByPlayerId(id);
+        Collection<Round> rounds = new RoundHelper().searchByFieldId("playerId",id);
         if (rounds.size() > 0){
             return Response.status(200).entity(rounds).build();
+        }
+        return Response.status(404).build();
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("/bytournament/{id}")
+    public Response listByTournamentId(@PathParam("id") String tournamentId) {
+        Collection<Round> rounds = new RoundHelper().searchByFieldId("tournamentId", tournamentId);
+        if (rounds.size() > 0){
+            return Response.status(200).entity(collectionToJson(rounds)).build();
         }
         return Response.status(404).build();
     }

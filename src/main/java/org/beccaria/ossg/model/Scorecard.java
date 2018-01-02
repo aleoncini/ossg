@@ -115,4 +115,56 @@ public class Scorecard {
         return this;
     }
 
+    public int getMedal(){
+        int medal = 0;
+        for (int i =1; i<=18; i++) {
+            medal += scores.get(Integer.toString(i)).getStrokes();
+        }
+        return medal;
+    }
+
+    public int getNetMedal(){
+        return getMedal() - phcp;
+    }
+
+    public int getStableford(){
+        int stb = 0;
+        for (int i =1; i<=18; i++) {
+            stb += scores.get(Integer.toString(i)).getPoints();
+        }
+        return stb;
+    }
+
+    public int getLastNineStableford(){
+        int stb = 0;
+        for (int i=10; i<=18; i++) {
+            stb += scores.get(Integer.toString(i)).getPoints();
+        }
+        return stb;
+    }
+
+    public int getLastSixStableford(){
+        int stb = 0;
+        for (int i=13; i<=18; i++) {
+            stb += scores.get(Integer.toString(i)).getPoints();
+        }
+        return stb;
+    }
+
+    public int getLastThreeStableford(){
+        int stb = 0;
+        for (int i=16; i<=18; i++) {
+            stb += scores.get(Integer.toString(i)).getPoints();
+        }
+        return stb;
+    }
+
+    public int getPutts(){
+        int putts = 0;
+        for (int i=1; i<=18; i++) {
+            putts += scores.get(Integer.toString(i)).getPutts();
+        }
+        return putts;
+    }
+
 }

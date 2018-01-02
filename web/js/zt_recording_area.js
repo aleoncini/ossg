@@ -185,17 +185,17 @@ function formatModalWindowToSelectTournament(){
         theUrl += '&year=' + $("#year_of_event_hidden_value").val();
     }
     $.get(theUrl, function(data) {
-        addCTournamentsToSelectionWindow(data.tournaments);
+        addTournamentsToSelectionWindow(data.tournaments);
     });
 };
-function addCTournamentsToSelectionWindow(tournaments) {
-    var sel_content = '<option value="0">select a course from list</option>';
-    $('#sel_course_list').append(sel_content);
-    $.each(courses, function (index, course) {
-        sel_content = '<option value="' + course.id + '">' + course.name + '</option>';
-        $('#sel_course_list').append(sel_content);
+function addTournamentsToSelectionWindow(tournaments) {
+    $('#sel_tournament_list').empty();
+    var sel_content = '<option value="0">select a Tournament from the list</option>';
+    $.each(tournaments, function (index, tournament) {
+        sel_content += '<option value="' + tournament.id + '">' + tournament.title + '</option>';
     });
-    $('#sel_course_list').show(1000);
+    $('#sel_tournament_list').append(sel_content);
+    $('#sel_tournament_list').show();
 };
 /**
  *  checkDataToPlay()
@@ -223,6 +223,9 @@ function initRound() {
         theUrl += '&day=' + $("#day_of_event_hidden_value").val();
         theUrl += '&month=' + $("#month_of_event_hidden_value").val();
         theUrl += '&year=' + $("#year_of_event_hidden_value").val();
+    }
+    if ($("#tournamentid_hidden_value").val().length > 0){
+        theUrl += '&tournamentid=' + $("#tournamentid_hidden_value").val();
     }
     $.ajax({
         url: theUrl,
@@ -521,7 +524,7 @@ function formatRound(){
     tableHeader += formatStrokeTableCell(7);
     tableHeader += formatStrokeTableCell(8);
     tableHeader += formatStrokeTableCell(9);
-    tableHeader += '<td class="round_tbl_sum">' + window.results.str_in + '</td>';
+    tableHeader += '<td class="round_tbl_sum">' + window.results.str_out + '</td>';
     tableHeader += formatStrokeTableCell(10);
     tableHeader += formatStrokeTableCell(11);
     tableHeader += formatStrokeTableCell(12);
@@ -531,7 +534,7 @@ function formatRound(){
     tableHeader += formatStrokeTableCell(16);
     tableHeader += formatStrokeTableCell(17);
     tableHeader += formatStrokeTableCell(18);
-    tableHeader += '<td class="round_tbl_sum">' + window.results.str_out + '</td>';
+    tableHeader += '<td class="round_tbl_sum">' + window.results.str_in + '</td>';
     tableHeader += '<td class="round_tbl_sum">' + (window.results.str_in + window.results.str_out) + '</td>';
     tableHeader += '</tr>';
     tableHeader += '<tr>';
@@ -545,7 +548,7 @@ function formatRound(){
     tableHeader += '<td>' + window.roundData.scorecard.scores[7].putts + '</td>';
     tableHeader += '<td>' + window.roundData.scorecard.scores[8].putts + '</td>';
     tableHeader += '<td>' + window.roundData.scorecard.scores[9].putts + '</td>';
-    tableHeader += '<td class="round_tbl_sum">' + window.results.put_in + '</td>';
+    tableHeader += '<td class="round_tbl_sum">' + window.results.put_out + '</td>';
     tableHeader += '<td>' + window.roundData.scorecard.scores[10].putts + '</td>';
     tableHeader += '<td>' + window.roundData.scorecard.scores[11].putts + '</td>';
     tableHeader += '<td>' + window.roundData.scorecard.scores[12].putts + '</td>';
@@ -555,7 +558,7 @@ function formatRound(){
     tableHeader += '<td>' + window.roundData.scorecard.scores[16].putts + '</td>';
     tableHeader += '<td>' + window.roundData.scorecard.scores[17].putts + '</td>';
     tableHeader += '<td>' + window.roundData.scorecard.scores[18].putts + '</td>';
-    tableHeader += '<td class="round_tbl_sum">' + window.results.put_out + '</td>';
+    tableHeader += '<td class="round_tbl_sum">' + window.results.put_in + '</td>';
     tableHeader += '<td class="round_tbl_sum">' + (window.results.put_in + window.results.put_out) + '</td>';
     tableHeader += '</tr>';
     tableHeader += '<tr>';
@@ -685,8 +688,8 @@ function formatRoundListHeaderInfo(theYear, theMonth) {
     }
 };
 function loadRoundsData() {
-    //var theUrl = '/rs/rounds/search?playerid=' + sessionStorage.getItem("playerid");
-    var theUrl = '/rs/rounds/search?playerid=andrea.leoncini';
+    var theUrl = '/rs/rounds/search?playerid=' + sessionStorage.getItem("playerid");
+    //var theUrl = '/rs/rounds/search?playerid=andrea.leoncini';
     theUrl += '&year=' + sessionStorage.getItem("year");
     if (Number(sessionStorage.getItem("month")) > 0){
         theUrl += '&month=' + sessionStorage.getItem("month");
