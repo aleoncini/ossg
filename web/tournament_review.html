@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="page with tournaments archive list">
     <meta name="author" content="Andrea Leoncini">
-    <meta name="keywords" value="golf, zingarotour, zingaro tour, classifica, roma">
+    <meta name="keywords" value="golf, zingarotour, zingaro tour, classifica, roma, tournament">
     <link rel="icon" href="favicon.ico">
 
-    <title>zingarotour.org - Round Review</title>
+    <title>zingarotour.org - Tournament Review</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -29,16 +29,12 @@
 
   <div class="container">
 
-    <h3>Round <span style="color: #A30000">Review</span></h3>
+    <h3>Tournament <span style="color: #A30000">Review</span></h3>
 
-    <p class="lead" id="playerInfo"></p>
+    <p id="theTitle"></p>
+    <p id="theDate"></p>
 
-    <div>
-      <button type="button" class="btn btn-warning" id="btn_edit_round" style="float: right"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
-      <br>
-    </div>
-
-    <table class="table table-condensed round_tbl" id="tbl_round">
+    <table class="table table-condensed round_tbl table-hover" id="tbl_tour">
     </table>
 
   </div>
@@ -58,12 +54,13 @@
     <script>
 
         $(document).ready(function(){
-            loadRoundDataForReview();
+            initializeTournamentReviewPage();
+        });
 
-            $("#btn_edit_round").click(function(){
-                window.location.href = 'round_edit.html?roundid=' + getRoundId();
-            });
-
+        $(document).on("click", ".goto_view_round", function () {
+            var roundid = $(this).data('id');
+            var goto = 'round_review.html?roundid=' + roundid;
+            window.location.href = goto;
         });
 
     </script>

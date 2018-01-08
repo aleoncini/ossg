@@ -111,3 +111,10 @@ function getRoundId(){
     }
     return roundid;
 };
+function getTournamentId(){
+    var tid = getUrlParameter("tournamentid");
+    if ((tid == null) || (tid.length == 0)){
+        tid = sessionStorage.getItem("tournamentid");
+    }
+    return tid;
+};

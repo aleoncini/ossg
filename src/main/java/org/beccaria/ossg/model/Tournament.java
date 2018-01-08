@@ -81,7 +81,7 @@ public class Tournament {
         buffer.append("\"title\": \"").append(title).append("\",");
         buffer.append("\"dayOfEvent\": ").append(dayOfEvent.toString()).append(",");
         buffer.append("\"isOpen\": ").append(this.isOpen).append(",");
-        buffer.append("\"type\": ").append(this.type).append(",");
+        buffer.append("\"type\": ").append(this.type);
         buffer.append(" }");
         return  buffer.toString();
     }
@@ -100,7 +100,6 @@ public class Tournament {
         buffer.append("\"  isOpen\": ").append(this.isOpen).append(",");
         buffer.append(", \n");
         buffer.append("\"  type\": ").append(this.type).append(",");
-        buffer.append(", \n");
         buffer.append("\n}\n");
         return  buffer.toString();
     }

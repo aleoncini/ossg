@@ -148,3 +148,20 @@ table#tbl_courses {
   background-color: #f4edd0;
   font-weight: normal;
 }
+/* set of style for tournament review table */
+.t_tbl_th_left {
+  text-align: left;
+  font-weight: bold;
+  color: #eeeeff;
+  background-color: #777777;
+}
+.t_tbl_th_center {
+  text-align: center;
+  font-weight: normal;
+  color: #eeeeff;
+  background-color: #777777;
+}
+.t_tbl_td_left {
+  text-align: left;
+  font-weight: bold;
+}

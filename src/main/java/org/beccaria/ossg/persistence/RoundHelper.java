@@ -3,10 +3,7 @@ package org.beccaria.ossg.persistence;
 import org.beccaria.ossg.model.*;
 import org.bson.Document;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 
 public class RoundHelper {
     public static String COLLECTION_NAME = "rounds";
@@ -119,6 +116,24 @@ public class RoundHelper {
                 .append("dayOfEvent.year", dayOfEvent.getYear());
         Iterator<Document> docs = DBTools.searchByFilter("rounds",filter);
         return docs.hasNext();
+    }
+
+    public List<Round> orderByStableford(Collection<Round> rounds){
+        List<Round> orderedRounds = new ArrayList<Round>();
+        for (Round r : rounds) {
+            orderedRounds.add(r);
+        }
+        Collections.sort(orderedRounds);
+        return orderedRounds;
+    }
+
+    public List<Round> orderByMedal(Collection<Round> rounds){
+        List<Round> orderedRounds = new ArrayList<Round>();
+        for (Round r : rounds) {
+            orderedRounds.add(r);
+        }
+        Collections.sort(orderedRounds, new MedalResultComparator());
+        return orderedRounds;
     }
 
 }

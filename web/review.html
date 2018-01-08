@@ -29,16 +29,17 @@
 
 <div class="container">
 
-    <h3>Review <span style="color: #A30000">rounds</span></h3>
+    <h3>Review <span style="color: #A30000">rounds</span> or Tournaments</h3>
 
     <!-- DIV user email ======================================= -->
     <div class="input-group">
-        <p class="lead">Player: <span id="pname"></span></p>
-        <p class="lead">Year: <span id="yearOfEvent">2017</span> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#yearSelection" id="btn_changeYearLink">change</button></p>
-        <p class="lead">Month: <span id="monthOfEvent">all year</span> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#monthSelection" id="btn_changeMonthLink">change</button></p>
+        <br><p>Player: <span id="pname"></span></p>
+        <br><p>Year: <span id="yearOfEvent">2017</span> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#yearSelection" id="btn_changeYearLink">change</button></brp>
+        <p>Month: <span id="monthOfEvent">all year</span> <button type="button" class="btn btn-link" data-toggle="modal" data-target="#monthSelection" id="btn_changeMonthLink">change</button></p>
         <input type="hidden" value="2017" id="year_hidden_value">
         <input type="hidden" value="0" id="month_hidden_value">
-        <button type="button" class="btn btn-primary" id="btn_goto_round_list">Go</button>
+        <button type="button" class="btn btn-primary" id="btn_goto_round_list">View Rounds</button>
+        <button type="button" class="btn btn-primary" id="btn_goto_tournament_list">Tournaments</button>
     </div>
     <!-- DIV user email === END =============================== -->
 
@@ -154,6 +155,11 @@
             sessionStorage.setItem("year", $("#year_hidden_value").val());
             sessionStorage.setItem("month", $("#month_hidden_value").val());
             window.location.href = 'roundlist.html';
+        });
+        $("#btn_goto_tournament_list").click(function(){
+            sessionStorage.setItem("year", $("#year_hidden_value").val());
+            sessionStorage.setItem("month", $("#month_hidden_value").val());
+            window.location.href = 'tlist.html';
         });
 
     });

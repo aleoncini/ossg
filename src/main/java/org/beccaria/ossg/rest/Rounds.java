@@ -6,6 +6,8 @@ import org.beccaria.ossg.persistence.RoundHelper;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
 @Path("/rs/rounds")
@@ -56,6 +58,7 @@ public class Rounds {
     }
 
     @POST
+    @Produces("application/json")
     @Path("/init")
     public Response initNewRound(
             @QueryParam("playerid") String playerid,
@@ -65,17 +68,29 @@ public class Rounds {
             @QueryParam("day") int theDay,
             @QueryParam("month") int theMonth,
             @QueryParam("year") int theYear){
+        System.out.println("===> " + playerid);
+        System.out.println("===> " + phcp);
+        System.out.println("===> " + courseid);
+        System.out.println("===> " + tournamentid);
+        System.out.println("===> " + theDay);
+        System.out.println("===> " + theMonth);
         if (playerid == null || playerid.length() == 0){
-            ResponseInfo responseInfo = new ResponseInfo().setMessage("Player Id not specified.");
-            return Response.status(400).entity(responseInfo.toString()).build();
+            ResponseInfo responseInfo = new ResponseInfo()
+                    .setStatus(ResponseInfo.ERROR_STATUS)
+                    .setMessage("Player Id not specified.");
+            return Response.status(200).entity(responseInfo.toString()).build();
         }
         if (phcp == 0){
-            ResponseInfo responseInfo = new ResponseInfo().setMessage("Playing handicap not specified.");
-            return Response.status(400).entity(responseInfo.toString()).build();
+            ResponseInfo responseInfo = new ResponseInfo()
+                    .setStatus(ResponseInfo.ERROR_STATUS)
+                    .setMessage("Playing handicap not specified.");
+            return Response.status(200).entity(responseInfo.toString()).build();
         }
         if (courseid == null || courseid.length() == 0){
-            ResponseInfo responseInfo = new ResponseInfo().setMessage("Course Id not specified.");
-            return Response.status(400).entity(responseInfo.toString()).build();
+            ResponseInfo responseInfo = new ResponseInfo()
+                    .setStatus(ResponseInfo.ERROR_STATUS)
+                    .setMessage("Course Id not specified.");
+            return Response.status(200).entity(responseInfo.toString()).build();
         }
         Round round = null;
         DayOfEvent dayOfEvent = null;
@@ -85,15 +100,17 @@ public class Rounds {
             dayOfEvent = new DayOfEvent().today();
         }
         if (new RoundHelper().roundExists(playerid,courseid,dayOfEvent)){
-            ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.ERROR_STATUS)
+            ResponseInfo responseInfo = new ResponseInfo()
+                    .setStatus(ResponseInfo.ERROR_STATUS)
                     .setMessage("Found another round in the same day and the same course.");
             return Response.status(200).entity(responseInfo.toString()).build();
         }
         round = new RoundHelper().initializeNewRound(playerid, phcp, courseid, tournamentid, dayOfEvent);
         if (round == null){
-            ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS)
+            ResponseInfo responseInfo = new ResponseInfo()
+                    .setStatus(ResponseInfo.ERROR_STATUS)
                     .setMessage("Unable to initialize a new round.");
-            return Response.status(400).entity(responseInfo.toString()).build();
+            return Response.status(200).entity(responseInfo.toString()).build();
         }
         ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS)
                 .setMessage("New Round successfully initialized.")
@@ -152,7 +169,6 @@ public class Rounds {
     @Consumes("application/json")
     @Path("/add")
     public Response addRound(Round round){
-        logger.info("===============================================================================" + round.prettyPrint());
         if (new RoundHelper().save(round)){
             return Response.status(200).entity("{\"result\":\"success\", \"roundId\":\"" + round.getId() + "\", \"message\":\"OK\"}").build();
         } else {
@@ -173,11 +189,14 @@ public class Rounds {
 
     @GET
     @Produces("application/json")
-    @Path("/bytournament/{id}")
+    @Path("/leaderboard/{id}")
     public Response listByTournamentId(@PathParam("id") String tournamentId) {
         Collection<Round> rounds = new RoundHelper().searchByFieldId("tournamentId", tournamentId);
         if (rounds.size() > 0){
-            return Response.status(200).entity(collectionToJson(rounds)).build();
+            List<Round> ordered = new RoundHelper().orderByStableford(rounds);
+            //to have descending order
+            Collections.reverse(ordered);
+            return Response.status(200).entity(leaderboardToJson(ordered)).build();
         }
         return Response.status(404).build();
     }
@@ -208,6 +227,21 @@ public class Rounds {
                 isElementAfterFirst = true;
             }
             buffer.append(round.toString());
+        }
+        buffer.append(" ] }");
+        return buffer.toString();
+    }
+
+    private String leaderboardToJson(Collection<Round> rounds){
+        boolean isFirst = true;
+        StringBuffer buffer = new StringBuffer("{\"results\": [ ");
+        for (Round round : rounds) {
+            if (isFirst){
+                isFirst = false;
+            } else {
+                buffer.append(",");
+            }
+            buffer.append(round.result());
         }
         buffer.append(" ] }");
         return buffer.toString();

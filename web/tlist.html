@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="page with tournaments archive list">
+    <meta name="author" content="Andrea Leoncini">
+    <meta name="keywords" value="golf, zingarotour, zingaro tour, classifica, roma">
+    <link rel="icon" href="favicon.ico">
+
+    <title>zingarotour.org - Tournaments</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/zt.css" rel="stylesheet">
+</head>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="review.html"><span class="glyphicon glyphicon-chevron-left"></span> zingarotour<span style="color: #A30000">.org</span></a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h3>List of archived <span style="color: #A30000">tournaments</span></h3>
+
+    <p>in the period of year: <span id="tListYear"></span>, month: <span id="tListMonth"></span>
+    </p>
+
+    <table class="table table-condensed table-hover" id="tbl_t_list">
+    </table>
+
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+<!-- Specific page scripts -->
+<!-- ================================================== -->
+<script src="js/zt_utils.js"></script>
+<script src="js/zt_recording_area.js"></script>
+
+<script>
+
+    $(document).ready(function(){
+        initTListPage();
+        loadTournamentsData();
+    });
+
+    $(document).on("click", ".goto_view_tournament", function () {
+        var t_id = $(this).data('id');
+        var goto = 'tournament_review.html?tournamentid=' + t_id;
+        window.location.href = goto;
+    });
+
+</script>
+<!-- ================================================== -->
+
+</body>
+</html>

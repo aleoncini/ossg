@@ -243,6 +243,79 @@ function initRound() {
 
 /**
  *
+ *  All the functions used in the review tournament page
+ *
+ */
+
+/**
+ *  initializeTournamentReviewPage()
+ *  When starting the page the app loads from server data related to the
+ *  Tournament that must be displayed
+ */
+function initializeTournamentReviewPage() {
+    var theUrl = '/rs/tournaments/tournament/' + getTournamentId();
+    $.ajax({
+        url: theUrl,
+        type: 'GET',
+        data: {},
+        dataType: 'json',
+        complete: function(response, status, xhr){
+            var data = jQuery.parseJSON(response.responseText);
+            $('#theTitle').html(data.title);
+            var theDate = data.dayOfEvent.day + " ";
+            theDate += getMonthName(Number(data.dayOfEvent));
+            theDate += " " + data.dayOfEvent.year;
+            $('#theDate').html(theDate);
+            loadRoundsForLeaderboard();
+        }
+    });
+};
+/**
+ *  loadRoundsForLeaderboard()
+ *  When loading the page all rounds of the tournament must be loaded
+ */
+function loadRoundsForLeaderboard() {
+    var theUrl = '/rs/rounds/leaderboard/' + getTournamentId();
+    $.ajax({
+        url: theUrl,
+        type: 'GET',
+        data: {},
+        dataType: 'json',
+        complete: function(response, status, xhr){
+            var data = jQuery.parseJSON(response.responseText);
+            createLeaderBoard(data.results);
+        }
+    });
+};
+function createLeaderBoard(results) {
+    var tableContent = '<thead>';
+    tableContent += '<tr>';
+    tableContent += '<td class="t_tbl_th_center">#</td>';
+    tableContent += '<td class="t_tbl_th_left">player</td>';
+    tableContent += '<td class="t_tbl_th_left">course</td>';
+    tableContent += '<td class="t_tbl_th_center">hcp</td>';
+    tableContent += '<td  class="t_tbl_th_center">stb</td>';
+    tableContent += '</tr>';
+    tableContent += '</thead>';
+
+    tableContent += '<tbody>';
+    $.each(results, function (index, r) {
+        tableContent += '<tr class="goto_view_round" data-id="' + r.roundid + '">';
+        tableContent += '<td>' + (index + 1) + '</td>';
+        tableContent += '<td class="t_tbl_td_left">' + r.playerName + '</td>';
+        tableContent += '<td class="t_tbl_td_left">' + r.course + '</td>';
+        tableContent += '<td>' + r.phcp + '</td>';
+        tableContent += '<td>' + r.stb + '</td>';
+        tableContent += '</tr>';
+    });
+    tableContent += '</tbody>';
+
+    $("#tbl_tour").html(tableContent);
+};
+/* --- END Tournament Review ---------------------- */
+
+/**
+ *
  *  All the functions used in the hole by hole page
  *
  */
@@ -254,7 +327,7 @@ function initRound() {
  *  and then saved back to the server.
  */
 function loadRoundDataToPlay() {
-    var theUrl = '/rs/rounds/round/' + localStorage.getItem("roundid");
+    var theUrl = '/rs/rounds/round/' + getRoundId();
     $.ajax({
         url: theUrl,
         type: 'GET',
@@ -407,7 +480,7 @@ function saveRoundScorecard() {
         complete: function(response, status, xhr){
             var data = jQuery.parseJSON(response.responseText);
             console.log("RESULT: " + data.status);
-            window.location.href = 'round_review.html';
+            window.location.href = 'round_review.html?roundid=' + window.roundData.id;
         }
     });
 };
@@ -676,7 +749,7 @@ function getRoundListHeaderInfo() {
         window.location.href = 'review.html';
         return;
     }
-    formatRoundListHeaderInfo(yearToSearch, sessionStorage.getItem("month"))
+    formatRoundListHeaderInfo(yearToSearch, sessionStorage.getItem("month"));
 };
 function formatRoundListHeaderInfo(theYear, theMonth) {
     $("#roundListPlayerName").html(sessionStorage.getItem("playerName"));
@@ -714,3 +787,72 @@ function formatRoundListTable(rounds) {
     $("#tbl_round_list").html(tableContent);
 };
 /* --- END Review Round ---------------------- */
+/* --- Tournament List Page ---------------------- */
+function initTListPage() {
+    var yearToSearch = getUrlParameter("year");
+    if ((yearToSearch == null)||(yearToSearch.length == 0)){
+        yearToSearch = sessionStorage.getItem("year");
+    }
+    if (yearToSearch == null){
+        window.location.href = 'review.html';
+        return;
+    }
+    console.log("======> " + yearToSearch);
+    var monthToSearch = getUrlParameter("month");
+    if (monthToSearch == null){
+        monthToSearch = sessionStorage.getItem("month");
+    }
+    $("#tListYear").html(yearToSearch);
+    if (Number(monthToSearch) == 0){
+        $("#tListMonth").html('all months');    //var theUrl = '/rs/rounds/search?playerid=andrea.leoncini';
+
+    } else {
+        $("#tListMonth").html(getMonthName(Number(monthToSearch)));
+    }
+    loadTournamentsData(yearToSearch, monthToSearch);
+};
+function loadTournamentsData(yy,mm) {
+    var theUrl = '/rs/tournaments/search?';
+    theUrl += 'year=' + yy;
+    if (Number(mm) > 0){
+        theUrl += '&month=' + mm;
+    }
+    $.get(theUrl, function(data) {
+        formatTListTable(data.tournaments);
+    });
+};
+function formatTListTable(tournaments) {
+    var tableContent = '<thead>';
+    tableContent += '<tr><th>Date</th><th>Title</th></tr>';
+    tableContent += '</thead>';
+    tableContent += '<tbody>';
+    $.each(tournaments, function (index, t) {
+        tableContent += '<tr class="goto_view_tournament" data-id="' + t.id + '">';
+        tableContent += '<td>' + t.dayOfEvent.day + ' ' + getMonthName(Number(t.dayOfEvent.month)) + ' ' + t.dayOfEvent.year + '</td>';
+        tableContent += '<td>' + t.title + '</td>';
+        tableContent += '</tr>';
+    });
+    tableContent += '</tbody>';
+    $("#tbl_t_list").html(tableContent);
+};
+/* --- END Tournament List Page ------------------ */
+/* --- Edit Round Page --------------------------- */
+function initEditRoundPage() {
+    var theUrl = '/rs/rounds/round/' + getRoundId();
+    $.ajax({
+        url: theUrl,
+        type: 'GET',
+        data: {},
+        dataType: 'json',
+        complete: function(response, status, xhr){
+            var data = jQuery.parseJSON(response.responseText);
+            window.roundData = data;
+            $("#plname").html(window.roundData.playerName);
+            $("#plhcp").html(window.roundData.scorecard.phcp);
+            $("#pldate").html((window.roundData.dayOfEvent.day + '.' + window.roundData.dayOfEvent.month + '.' + window.roundData.dayOfEvent.year));
+            $("#cname").html(window.roundData.course.name);
+        }
+    });
+
+};
+/* --- END Edit Round Page ----------------------- */

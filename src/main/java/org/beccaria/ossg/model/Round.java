@@ -150,6 +150,22 @@ public class Round implements Comparable<Round>{
         return  buffer.toString();
     }
 
+    public String result() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("{ ");
+        buffer.append("\"roundid\": \"").append(this.id).append("\"");
+        buffer.append(", ");
+        buffer.append("\"playerName\": \"").append(playerName).append("\"");
+        buffer.append(", ");
+        buffer.append("\"course\": \"").append(course.getName()).append("\"");
+        buffer.append(", ");
+        buffer.append("\"phcp\": \"").append(scorecard.getPhcp()).append("\"");
+        buffer.append(", ");
+        buffer.append("\"stb\": \"").append(scorecard.getStableford()).append("\"");
+        buffer.append(" }");
+        return  buffer.toString();
+    }
+
     public Document getDocument(){
         if (id == null){
             return null;
