@@ -31,17 +31,29 @@
 
     <h3>Edit <span style="color: #A30000">Round</span></h3>
 
-    <table cellspacing="5">
-      <tr><td style="width:120px">Player:</td><td style="width:240px" id="plname"></td><td style="width:100px">&nbsp;</td></tr>
-      <tr><td style="width:120px">playing hcp:</td><td style="width:240px" id="plhcp"></td><td style="width:100px"><button type="button" class="btn btn-primary btn-sm open-hcpSelection" data-toggle="modal" data-target="#hcpSelection" id="btn_change_phcp">change</button></td></tr>
-      <tr><td style="width:120px">date:</td><td style="width:240px" id="pldate"></td><td style="width:100px"><button type="button" class="btn btn-primary btn-sm open-daySelection" data-toggle="modal" data-target="#dayOfEventSelection" id="btn_change_date">change</button></td></tr>
-      <tr><td style="width:120px">Course:</td><td style="width:240px" id="cname"></td><td style="width:100px">&nbsp;</td></tr>
+    <table cellspacing="8">
+      <tr style="height: 40px"><td style="width:120px">Player:</td><td style="width:240px" id="plname"></td><td style="width:100px">&nbsp;</td></tr>
+      <tr style="height: 40px"><td style="width:120px">playing hcp:</td><td style="width:240px"><input type="text" class="form-control" id="plhcp"></td><td style="width:100px">&nbsp;</td></tr>
+      <tr style="height: 40px"><td style="width:120px">date:</td><td style="width:240px" id="pldate"></td><td style="width:100px"><button type="button" class="btn btn-default btn-sm open-daySelection" data-toggle="modal" data-target="#dayOfEventSelection" id="btn_change_date">change</button></td></tr>
+      <tr style="height: 40px"><td style="width:120px">Course:</td><td style="width:240px" id="cname"></td><td style="width:100px">&nbsp;</td></tr>
+      <tr><td style="width:120px">&nbsp;</td><td style="width:240px"><button type="button" class="btn btn-primary btn-sm" id="btn_savendexit">save & exit</button> <button type="button" class="btn btn-primary btn-sm" id="btn_savendedit">save & edit score</button></td><td><button type="button" class="btn btn-danger btn-sm" id="btn_delete"><span class="glyphicon glyphicon-remove"></span> delete</button></td></tr>
     </table>
 
-    <input type="hidden" value="0" id="phcp_hidden_value">
     <input type="hidden" value="0" id="day_of_event_hidden_value">
     <input type="hidden" value="0" id="month_of_event_hidden_value">
     <input type="hidden" value="0" id="year_of_event_hidden_value">
+
+    <div class="alert alert-success alert-dismissible" style="display: none" role="alert" id="changes_saved">
+      <p><strong>Success!</strong> changes saved.</p>
+    </div>
+
+    <div class="alert alert-danger" style="display: none"  role="alert" id="error_while_saving">
+      <h4 class="alert-heading">Oops! something went wrong. Changes NOT saved.</h4>
+    </div>
+
+    <div class="alert alert-warning" style="display: none"  role="alert" id="phcp_warning">
+      <h4 class="alert-heading">Pay attention please! Insert a valid hcp (between 0 and 36).</h4>
+    </div>
 
   </div>
 
@@ -134,72 +146,6 @@
   <!-- Modal window for event day selection -->
   <!-- END -------------------------------- -->
 
-  <!-- Modal window for playing hcp selection -->
-  <div id="hcpSelection" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h3 class="modal-title">Playing Hcp</h3>
-        </div>
-        <div class="modal-body">
-          <h4>choose your playing handicap</h4>
-
-          <select class="form-control" id="sel_hcp">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            <option>6</option>
-            <option>7</option>
-            <option>8</option>
-            <option>9</option>
-            <option>10</option>
-            <option>11</option>
-            <option>12</option>
-            <option>13</option>
-            <option>14</option>
-            <option>15</option>
-            <option>16</option>
-            <option>17</option>
-            <option selected>18</option>
-            <option>19</option>
-            <option>20</option>
-            <option>21</option>
-            <option>22</option>
-            <option>23</option>
-            <option>24</option>
-            <option>25</option>
-            <option>26</option>
-            <option>27</option>
-            <option>27</option>
-            <option>28</option>
-            <option>29</option>
-            <option>30</option>
-            <option>31</option>
-            <option>32</option>
-            <option>33</option>
-            <option>34</option>
-            <option>35</option>
-            <option>36</option>
-          </select>
-        </div>
-
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-danger" data-dismiss="modal" id="cancel_select_hcp">Cancel</button>
-          <button type="submit" class="btn btn-primary" data-dismiss="modal" id="ok_select_hcp"><i class="glyphicon glyphicon-ok"></i> Ok</button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-  <!-- Modal window for playing hcp selection -->
-  <!-- END ---------------------------------- -->
-
-
   <!-- Bootstrap core JavaScript
 ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
@@ -218,10 +164,25 @@
             initEditRoundPage();
 
             $("#ok_select_day").click(function(){
-
+                var dd = $("#sel_day option:selected").text();
+                var mm = $("#sel_month option:selected").val();
+                var yy = $("#sel_year option:selected").text();
+                $("#day_of_event_hidden_value").val(dd);
+                $("#month_of_event_hidden_value").val(mm);
+                $("#year_of_event_hidden_value").val(yy);
+                $("#pldate").html((dd + '.' + mm + '.' + yy));
             });
-            $("#ok_select_hcp").click(function(){
 
+            $("#btn_delete").click(function(){
+                deleteRound();
+            });
+
+            $("#btn_savendexit").click(function(){
+                saveRoundInfoOnly();
+            });
+
+            $("#btn_savendedit").click(function(){
+                saveRoundInfo();
             });
 
         });

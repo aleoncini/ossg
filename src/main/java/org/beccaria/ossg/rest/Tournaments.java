@@ -1,8 +1,6 @@
 package org.beccaria.ossg.rest;
 
-import org.beccaria.ossg.model.Course;
 import org.beccaria.ossg.model.Tournament;
-import org.beccaria.ossg.persistence.CourseHelper;
 import org.beccaria.ossg.persistence.TournamentHelper;
 
 import javax.ws.rs.*;

@@ -1,6 +1,7 @@
 package org.beccaria.ossg.persistence;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.UpdateResult;
 import org.bson.Document;
 
 import java.io.PrintWriter;
@@ -41,12 +42,15 @@ public class DBTools {
 
     public static boolean update(String collectionName, Document filter, Document set) {
 
-        long count = DBConfiguration.getInstance()
+        UpdateResult result = DBConfiguration.getInstance()
                 .getDatabase()
                 .getCollection(collectionName)
-                .updateOne(filter,set)
-                .getModifiedCount();
-        if (count == 1){
+                .updateOne(filter,set);
+        if (result.getModifiedCount() == 1){
+            return true;
+        }
+        if (result.getMatchedCount() == 1){
+            logger.warning("[DBTools.update] filter matched but no update elements. May be the set value is the same of original value?");
             return true;
         }
         return false;

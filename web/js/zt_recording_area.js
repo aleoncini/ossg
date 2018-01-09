@@ -471,7 +471,7 @@ function saveRoundScorecard() {
     save18thHole();
     var theUrl = '/rs/rounds/scorecard/';
     theUrl += window.roundData.id;
-    theUrl += '?phcp=' + sessionStorage.getItem("phcp");
+    theUrl += '?phcp=' + window.roundData.scorecard.phcp;
     theUrl += '&scorecard=' + createScorecardString();
     $.ajax({
         url: theUrl,
@@ -504,7 +504,6 @@ function createScorecardString() {
  *  All the functions used in the Review Round page
  *
  */
-
 function formatReviewRoundHelloPar(playername) {
     $('#hello_par').html("Hello " + playername);
 };
@@ -797,7 +796,6 @@ function initTListPage() {
         window.location.href = 'review.html';
         return;
     }
-    console.log("======> " + yearToSearch);
     var monthToSearch = getUrlParameter("month");
     if (monthToSearch == null){
         monthToSearch = sessionStorage.getItem("month");
@@ -848,11 +846,92 @@ function initEditRoundPage() {
             var data = jQuery.parseJSON(response.responseText);
             window.roundData = data;
             $("#plname").html(window.roundData.playerName);
-            $("#plhcp").html(window.roundData.scorecard.phcp);
+            $("#plhcp").text(window.roundData.scorecard.phcp);
+            $("#plhcp").val(window.roundData.scorecard.phcp);
             $("#pldate").html((window.roundData.dayOfEvent.day + '.' + window.roundData.dayOfEvent.month + '.' + window.roundData.dayOfEvent.year));
             $("#cname").html(window.roundData.course.name);
+            $("#day_of_event_hidden_value").val(window.roundData.dayOfEvent.day);
+            $("#month_of_event_hidden_value").val(window.roundData.dayOfEvent.month);
+            $("#year_of_event_hidden_value").val(window.roundData.dayOfEvent.year);
         }
     });
 
+};
+function deleteRound() {
+    var theUrl = '/rs/rounds/remove/' + getRoundId();
+    $.ajax({
+        url: theUrl,
+        type: 'POST',
+        dataType: 'json',
+        complete: function(response, status, xhr){
+            var data = jQuery.parseJSON(response.responseText);
+            console.log("RESULT: " + data.status);
+            if (data.status == 'success'){
+                $("#changes_saved").fadeIn();
+                setTimeout(function() {
+                    $("#changes_saved").fadeOut();
+                    setTimeout(function() {
+                        window.location.href = "review.html";
+                    }, 500);
+                }, 2000);
+            } else {
+                $("#error_while_saving").fadeIn();
+                setTimeout(function() {
+                    $("#error_while_saving").fadeOut();
+                }, 2000);
+            }
+        }
+    });
+};
+function saveRoundInfoOnly() {
+    updateRoundInfo(false);
+};
+function saveRoundInfo() {
+    updateRoundInfo(true);
+};
+function updateRoundInfo(edit) {
+    var phcp = Number($("#plhcp").val());
+
+    if ((phcp < 0) || (phcp > 36)){
+        $("#phcp_warning").fadeIn();
+        setTimeout(function() {
+            $("#phcp_warning").fadeOut();
+        }, 2000);
+        return;
+    }
+
+    var theUrl = '/rs/rounds/updinfo/' + getRoundId();
+    theUrl += '?phcp=' + phcp;
+    theUrl += '&day=' + $("#day_of_event_hidden_value").val();
+    theUrl += '&month=' + $("#month_of_event_hidden_value").val();
+    theUrl += '&year=' + $("#year_of_event_hidden_value").val();
+    console.log("URL: " + theUrl);
+    $.ajax({
+        url: theUrl,
+        type: 'POST',
+        dataType: 'json',
+        complete: function(response, status, xhr){
+            var data = jQuery.parseJSON(response.responseText);
+            console.log("RESULT: " + data.status);
+            if (data.status == 'success'){
+                $("#changes_saved").fadeIn();
+                setTimeout(function() {
+                    $("#changes_saved").fadeOut();
+                    setTimeout(function() {
+                        if (edit) {
+                            window.location.href = "hole.html?roundid=" + window.roundData.id;
+                        } else {
+                            window.location.href = "round_review.html?roundid=" + window.roundData.id;
+                        }
+                    }, 500);
+                }, 2000);
+            } else {
+                $("#error_while_saving").fadeIn();
+                setTimeout(function() {
+                    $("#error_while_saving").fadeOut();
+                }, 2000);
+            }
+        }
+    });
 };
 /* --- END Edit Round Page ----------------------- */

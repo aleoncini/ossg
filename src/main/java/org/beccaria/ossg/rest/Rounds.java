@@ -36,7 +36,6 @@ public class Rounds {
     @Path("/scorecard/{roundid}")
     public Response updateScorecard(@PathParam("roundid") String roundid, @QueryParam("phcp") int phcp, @QueryParam("scorecard") String sc) {
         Scorecard scorecard = new Scorecard().setPhcp(phcp).setScores(sc);
-        logger.info("=== scorecard: " + scorecard.prettyPrint());
         if (new RoundHelper().saveScorecard(roundid, scorecard)){
             ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS);
             return Response.status(200).entity(responseInfo.toString()).build();
@@ -45,16 +44,36 @@ public class Rounds {
         return Response.status(400).entity(responseInfo.toString()).build();
     }
 
-    @DELETE
+    @POST
+    @Produces("application/json")
+    @Path("/updinfo/{roundid}")
+    public Response updatePlayingHandicap(@PathParam("roundid") String roundid,
+                                          @QueryParam("phcp") int phcp,
+                                          @QueryParam("day") int dd,
+                                          @QueryParam("month") int mm,
+                                          @QueryParam("year") int yy) {
+        ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.ERROR_STATUS);
+        System.out.println("=====> " + roundid + " - " + phcp + " - " + dd + "." + mm + "." + yy);
+        Round round = new RoundHelper().getById(roundid);
+        if (round != null){
+            DayOfEvent dayOfEvent = round.getDayOfEvent().setDay(dd).setMonth(mm).setYear(yy);
+            RoundHelper helper = new RoundHelper();
+            if (helper.savePlayingHandicap(roundid,phcp) && helper.saveDayOfEvent(roundid, dayOfEvent)){
+                responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS);
+            }
+        }
+        return Response.status(200).entity(responseInfo.toString()).build();
+    }
+
+    @POST
     @Produces("application/json")
     @Path("/remove/{id}")
     public Response deleteRound(@PathParam("id") String id) {
-        if (new RoundHelper().deleteRound(id)){
-            ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS);
-            return Response.status(200).entity(responseInfo.toString()).build();
-        }
         ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.ERROR_STATUS);
-        return Response.status(400).entity(responseInfo.toString()).build();
+        if (new RoundHelper().deleteRound(id)){
+            responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS);
+        }
+        return Response.status(200).entity(responseInfo.toString()).build();
     }
 
     @POST

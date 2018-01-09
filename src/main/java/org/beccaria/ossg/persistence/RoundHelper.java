@@ -90,6 +90,25 @@ public class RoundHelper {
         return DBTools.update(RoundHelper.COLLECTION_NAME,filter,set);
     }
 
+    public boolean savePlayingHandicap(String roundId, int phcp){
+        System.out.println("=====> " + roundId + " - " + phcp);
+        Document filter = new Document("id",roundId);
+        Document values = new Document().append("scorecard.phcp", phcp);
+        Document set = new Document("$set",values);
+        return DBTools.update(RoundHelper.COLLECTION_NAME,filter,set);
+    }
+
+    public boolean saveDayOfEvent(String roundId, DayOfEvent doe){
+        System.out.println("=====> " + roundId + " - " + doe.prettyPrint());
+        Document filter = new Document("id",roundId);
+        Document values = new Document();
+        values.append("dayOfEvent.day",doe.getDay());
+        values.append("dayOfEvent.month",doe.getMonth());
+        values.append("dayOfEvent.year",doe.getYear());
+        Document set = new Document("$set",values);
+        return DBTools.update(RoundHelper.COLLECTION_NAME,filter,set);
+    }
+
     public Round getById(String id){
         Document roundDocument = DBTools.getById(COLLECTION_NAME,id);
         if (roundDocument == null){
