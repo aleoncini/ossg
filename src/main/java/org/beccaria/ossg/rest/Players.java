@@ -5,9 +5,16 @@ import org.beccaria.ossg.model.ResponseInfo;
 import org.beccaria.ossg.persistence.PlayerHelper;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
+
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
+
+import java.util.Base64;
 
 @Path("/rs/players")
 public class Players {
@@ -28,6 +35,33 @@ public class Players {
         } else {
             return Response.status(200).entity(player.toString()).build();
         }
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("/user")
+    public Response checkUser(@Context HttpHeaders headers) {
+        String encoded = headers.getHeaderString("authorization").substring("Basic ".length());
+        byte[] decoded = Base64.getDecoder().decode(encoded);
+        String authorizationHeader = null;
+        try {
+            authorizationHeader = new String(decoded, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        if (authorizationHeader == null) {
+            ResponseInfo responseInfo = new ResponseInfo().setStatus("ERROR")
+                    .setMessage("Unable to read user email.");
+            return Response.status(200).entity(responseInfo.toString()).build();
+        }
+        String[] tokens = authorizationHeader.split(":");
+        Player player = new PlayerHelper().getByEmail(tokens[0]);
+        if (player == null){
+            ResponseInfo responseInfo = new ResponseInfo().setStatus("ERROR")
+                    .setMessage("User not found.");
+            return Response.status(200).entity(responseInfo.toString()).build();
+        }
+        return Response.status(200).entity(player.toString()).build();
     }
 
     @GET

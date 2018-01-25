@@ -13,6 +13,18 @@ window.results = {};
  *
  */
 
+function checkPlayer() {
+    $.get("/rs/players/user", function(data) {
+        var data = jQuery.parseJSON(response.responseText);
+        if (data.id === "none"){
+            $("#unregistered_user_alert").fadeIn();
+        } else {
+            localStorage.setItem("playerid", data.id);
+            localStorage.setItem("playername", data.name);
+        }
+    });
+};
+
 function doubleCheck() {
     startWithBrowserCheck();
 };
