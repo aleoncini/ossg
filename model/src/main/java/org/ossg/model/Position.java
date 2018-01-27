@@ -1,4 +1,4 @@
-package org.beccaria.ossg.model;
+package org.ossg.model;
 
 import org.bson.Document;
 

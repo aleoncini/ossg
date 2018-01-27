@@ -8,13 +8,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
-
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Logger;
-
 import java.util.Base64;
+import java.util.Collection;
+import java.util.logging.Logger;
 
 @Path("/rs/players")
 public class Players {
@@ -28,7 +25,7 @@ public class Players {
     @GET
     @Produces("application/json")
     @Path("/player/{id}")
-    public Response checkEmail(@PathParam("id") String id) {
+    public Response getPlayerById(@PathParam("id") String id) {
         Player player = new PlayerHelper().getById(id);
         if (player == null){
             return Response.status(404).build();
