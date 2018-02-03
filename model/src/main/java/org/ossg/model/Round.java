@@ -115,7 +115,7 @@ public class Round implements Comparable<Round>{
             buffer.append("\"tournamentId\": \"").append(tournamentId).append("\"");
         }
         buffer.append(", ");
-        buffer.append("\"isNineHole\": \"").append(isNineHole).append("\"");
+        buffer.append("\"isNineHole\": ").append(isNineHole);
         buffer.append(", ");
         buffer.append("\"course\": ").append(course.toString());
         buffer.append(", ");
@@ -141,7 +141,7 @@ public class Round implements Comparable<Round>{
             buffer.append("\"tournamentId\": \"").append(tournamentId).append("\"");
         }
         buffer.append(", \n");
-        buffer.append("\"isNineHole\": \"").append(isNineHole).append("\"");
+        buffer.append("\"isNineHole\": ").append(isNineHole);
         buffer.append(", \n");
         buffer.append("\"course\": ").append(course.toString());
         buffer.append(", \n");

@@ -53,6 +53,7 @@ public class DBTools {
             logger.warning("[DBTools.update] filter matched but no update elements. May be the set value is the same of original value?");
             return true;
         }
+        logger.warning("[DBTools.update] matched 0 for collection: " + collectionName + ", " + filter.toJson() + ", " + set.toJson());
         return false;
     }
 

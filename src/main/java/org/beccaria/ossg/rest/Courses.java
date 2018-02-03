@@ -1,7 +1,7 @@
 package org.beccaria.ossg.rest;
 
-import org.beccaria.ossg.model.Course;
 import org.beccaria.ossg.persistence.CourseHelper;
+import org.ossg.model.Course;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -27,6 +27,14 @@ public class Courses {
         } else {
             return Response.status(200).entity(course.toString()).build();
         }
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Path("/ads")
+    public Response addCourseString(String jsonString){
+        Course course = new Course().build(jsonString);
+        return this.addCourse(course);
     }
 
     @POST

@@ -1,16 +1,20 @@
 package org.beccaria.ossg.persistence;
 
-import org.beccaria.ossg.model.Course;
 import org.bson.Document;
+import org.ossg.model.Course;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.UUID;
 
 public class CourseHelper {
     public static String COLLECTION_NAME = "courses";
 
     public boolean save(Course course){
+        if (course.getId() == null || course.getId().length() == 0){
+            course.setId(UUID.randomUUID().toString().replace("-", ""));
+        }
         return DBTools.save(COLLECTION_NAME, course.getDocument());
     }
 

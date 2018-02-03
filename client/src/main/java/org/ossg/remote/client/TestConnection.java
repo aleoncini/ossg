@@ -1,9 +1,8 @@
 package org.ossg.remote.client;
 
-import org.ossg.model.Player;
-import org.ossg.remote.helpers.PlayerHelper;
-
-import javax.ws.rs.core.Response;
+import org.ossg.model.DayOfEvent;
+import org.ossg.model.Tournament;
+import org.ossg.remote.helpers.TournamentHelper;
 
 public class TestConnection {
 
@@ -20,6 +19,8 @@ public class TestConnection {
                 .setPassword("ero1Tem@");
 
         ConnectionFactory factory = ConnectionFactory.getFactory(c);
+
+        /*
         System.out.println("=== getting root...");
         Response response = factory.getConnection().GET("/");
         System.out.println("=== status: " + response.getStatus());
@@ -36,6 +37,13 @@ public class TestConnection {
         Player nuovo = new Player().setName("Pinco Pallino");
         Player synced = new PlayerHelper().savePlayer(nuovo);
         System.out.println("\n=== " + synced.toString());
+        */
+
+        Tournament t = new Tournament().setTitle("La coppa del nonno").setDayOfEvent(new DayOfEvent().today());
+        System.out.println("\n=== adding test tournament...");
+        Tournament nt = new TournamentHelper().saveTournament(t);
+        System.out.println("=== test tournament ID: " + nt.getId());
+
 
         System.out.println("\n=== done.");
         System.out.println("=====================================================================");

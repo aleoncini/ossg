@@ -1,8 +1,9 @@
 package org.beccaria.ossg.rest;
 
-import org.beccaria.ossg.model.Player;
 import org.beccaria.ossg.model.ResponseInfo;
 import org.beccaria.ossg.persistence.PlayerHelper;
+import org.bson.Document;
+import org.ossg.model.Player;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -72,6 +73,14 @@ public class Players {
             }
         }
         return Response.status(200).entity("{\"id\":\"none\"}").build();
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Path("/ads")
+    public Response addPlayerString(String jsonString){
+        Player player = new Player().build(Document.parse(jsonString));
+        return this.addPlayer(player);
     }
 
     @POST

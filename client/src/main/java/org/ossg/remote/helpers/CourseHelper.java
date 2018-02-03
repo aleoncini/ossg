@@ -20,7 +20,7 @@ public class CourseHelper {
         if (connection == null){
             throw new IllegalStateException("Connection Factory not initialized. Use ConnectionFactory.getInstance(<Configuration>).");
         }
-        Response response = connection.POST("/rs/courses/add", course.toString());
+        Response response = connection.POST("/rs/courses/ads", course.toString());
         if (response.getStatus() == 200){
             String entity = response.readEntity(String.class);
             Document document = Document.parse(entity);

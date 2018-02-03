@@ -1,7 +1,7 @@
 package org.beccaria.ossg.rest;
 
-import org.beccaria.ossg.model.Tournament;
 import org.beccaria.ossg.persistence.TournamentHelper;
+import org.ossg.model.Tournament;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -27,6 +27,14 @@ public class Tournaments {
         } else {
             return Response.status(200).entity(tournament.toString()).build();
         }
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Path("/ads")
+    public Response addTournamentString(String jsonString){
+        Tournament tournament = new Tournament().build(jsonString);
+        return this.addTournament(tournament);
     }
 
     @POST

@@ -2,6 +2,9 @@ package org.ossg.model;
 
 import org.bson.Document;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Course {
     private String id;
     private String name;
@@ -11,7 +14,7 @@ public class Course {
     private String cap;
     private String website;
     private Position position;
-    private Hole[] holes;
+    private Map<String, Hole> holes = new HashMap<String, Hole>();
 
     public String getId() {
         return id;
@@ -85,24 +88,26 @@ public class Course {
         return this;
     }
 
-    public Hole[] getHoles() {
+    public Map<String, Hole> getHoles() {
         return holes;
     }
 
     public Hole getHole(int holeNumber) {
-        return holes[holeNumber - 1];
+        String holeName = String.valueOf(holeNumber);
+        return holes.get(holeName);
     }
 
     public Course setHoles(Hole[] holes) {
-        this.holes = holes;
+        for (int i=1; i<=18; i++){
+            String holeName = String.valueOf(i);
+            this.holes.put(holeName, holes[i]);
+        }
         return this;
     }
 
     public Course setHole(int holeNumber, Hole hole) {
-        if (holes == null){
-            holes = new Hole[18];
-        }
-        holes[holeNumber - 1] = hole;
+        String holeName = String.valueOf(holeNumber);
+        holes.put(holeName, hole);
         return this;
     }
 
@@ -162,11 +167,12 @@ public class Course {
         if (holes != null){
             if (notFirst) buffer.append(", ");
             buffer.append("\"holes\": { ");
-            for (int i =0; i<18; i++) {
-                if (i>0){
+            for (int i=1; i<=18; i++) {
+                String holeName = String.valueOf(i);
+                if (i>1){
                     buffer.append(", ");
                 }
-                buffer.append("\"").append(i +1).append("\": ").append(holes[i].toString());
+                buffer.append("\"").append(holeName).append("\": ").append(holes.get(holeName).toString());
             }
             buffer.append(" }");
         }
@@ -202,13 +208,16 @@ public class Course {
         }
 
         Document holeCollection = new Document();
-        String holename = null;
-        for (int i=0; i<18; i++){
-            holename = "" + (i +1);
-            holeCollection.append(holename, holes[i].getDocument());
+        for (int i=1; i<=18; i++){
+            String holeName = String.valueOf(i);
+            holeCollection.append(holeName, holes.get(holeName).getDocument());
         }
         document.append("holes",holeCollection);
         return document;
+    }
+
+    public Course build(String jsonString){
+        return this.build(Document.parse(jsonString));
     }
 
     public Course build(Document courseDocument){

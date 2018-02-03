@@ -275,7 +275,7 @@ function initializeTournamentReviewPage() {
             var data = jQuery.parseJSON(response.responseText);
             $('#theTitle').html(data.title);
             var theDate = data.dayOfEvent.day + " ";
-            theDate += getMonthName(Number(data.dayOfEvent));
+            theDate += getMonthName(Number(data.dayOfEvent.month));
             theDate += " " + data.dayOfEvent.year;
             $('#theDate').html(theDate);
             loadRoundsForLeaderboard();

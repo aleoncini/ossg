@@ -1,9 +1,12 @@
 package org.beccaria.ossg.persistence;
 
-import org.beccaria.ossg.model.*;
 import org.bson.Document;
+import org.ossg.model.Tournament;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.UUID;
 
 public class TournamentHelper {
     public static String COLLECTION_NAME = "tournaments";

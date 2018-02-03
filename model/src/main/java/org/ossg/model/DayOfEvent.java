@@ -83,9 +83,9 @@ public class DayOfEvent {
     public DayOfEvent build(String date){
         // This method can be used in case the date string is in the format:
         // DD/MM/YYYY
-        this.day = Integer.parseInt(date.substring(0,1));
-        this.month = Integer.parseInt(date.substring(3,4));
-        this.year = Integer.parseInt(date.substring(6,9));
+        this.day = Integer.parseInt(date.substring(0,2));
+        this.month = Integer.parseInt(date.substring(3,5));
+        this.year = Integer.parseInt(date.substring(6,10));
         return this;
     }
 
