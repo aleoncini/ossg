@@ -24,7 +24,7 @@ public class CourseHelper {
         if (response.getStatus() == 200){
             String entity = response.readEntity(String.class);
             Document document = Document.parse(entity);
-            String id = document.getString("id");
+            String id = document.getString("courseId");
             course.setId(id);
             return course;
         }
