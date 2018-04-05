@@ -157,11 +157,15 @@ public class Round implements Comparable<Round>{
         buffer.append(", ");
         buffer.append("\"playerName\": \"").append(playerName).append("\"");
         buffer.append(", ");
+        buffer.append("\"dayOfEvent\": \"").append(dayOfEvent.text()).append("\"");
+        buffer.append(", ");
         buffer.append("\"course\": \"").append(course.getName()).append("\"");
         buffer.append(", ");
         buffer.append("\"phcp\": \"").append(scorecard.getPhcp()).append("\"");
         buffer.append(", ");
         buffer.append("\"stb\": \"").append(scorecard.getStableford()).append("\"");
+        buffer.append(", ");
+        buffer.append("\"mdl\": \"").append(scorecard.getMedal()).append("\"");
         buffer.append(" }");
         return  buffer.toString();
     }

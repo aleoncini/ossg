@@ -57,6 +57,39 @@ public class DayOfEvent {
         return  buffer.toString();
     }
 
+    public String text() {
+        return new StringBuffer().append(day).append(" ").append(getMonthName()).append(" ").append(year).toString();
+    }
+
+    private String getMonthName() {
+        switch(month) {
+            case 1:
+                return "Jan";
+            case 2:
+                return "Feb";
+            case 3:
+                return "Mar";
+            case 4:
+                return "Apr";
+            case 5:
+                return "May";
+            case 6:
+                return "Jun";
+            case 7:
+                return "Jul";
+            case 8:
+                return "Aug";
+            case 9:
+                return "Sep";
+            case 10:
+                return "Oct";
+            case 11:
+                return "Nov";
+            default:
+                return "Dic";
+        }
+    }
+
     public String prettyPrint() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("\n{ \n");

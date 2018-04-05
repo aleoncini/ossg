@@ -260,6 +260,19 @@ public class Rounds {
         return Response.status(404).build();
     }
 
+    @GET
+    @Produces("application/json")
+    @Path("/list")
+    public Response list(@QueryParam("playerid") String playerid,
+                           @QueryParam("year") int year,
+                           @QueryParam("month") int month){
+        Collection<Round> rounds = new RoundHelper().search(playerid, null, null, year, month, 0);
+        if (rounds.size() > 0){
+            return Response.status(200).entity(leaderboardToJson(rounds)).build();
+        }
+        return Response.status(404).build();
+    }
+
     private String collectionToJson(Collection<Round> rounds){
         boolean isElementAfterFirst = false;
         StringBuffer buffer = new StringBuffer("{\"rounds\": [ ");

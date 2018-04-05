@@ -91,6 +91,16 @@ function getMonthName(monthNumber){
             return "Dic";
     }
 };
+function getJsonStringOfDayOfEvent(dd, mm, yy){
+    var jsonString = '{"day":';
+    jsonString += dd;
+    jsonString += ', "month":';
+    jsonString += mm;
+    jsonString += ', "year":';
+    jsonString += yy;
+    jsonString += '}';
+    return jsonString;
+};
 function getPlayerId(){
     var playerid = getUrlParameter("playerid");
     if ((playerid == null) || (playerid.length == 0)){
