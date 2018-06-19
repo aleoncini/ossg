@@ -1,7 +1,8 @@
 package org.beccaria.ossg.rest;
 
-import org.beccaria.ossg.model.Tournament;
+import org.beccaria.ossg.model.ResponseInfo;
 import org.beccaria.ossg.persistence.TournamentHelper;
+import org.ossg.model.Tournament;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -31,13 +32,23 @@ public class Tournaments {
 
     @POST
     @Consumes("application/json")
+    @Path("/ads")
+    public Response addTournamentString(String jsonString){
+        Tournament tournament = new Tournament().build(jsonString);
+        return this.addTournament(tournament);
+    }
+
+    @POST
+    @Consumes("application/json")
     @Path("/add")
     public Response addTournament(Tournament tournament){
+        ResponseInfo responseInfo = new ResponseInfo();
         if (new TournamentHelper().save(tournament)){
-            return Response.status(200).entity("{\"result\":\"success\", \"tournamentId\":\"" + tournament.getId() + "\", \"message\":\"OK\"}").build();
+            responseInfo.setId(tournament.getId()).setStatus(ResponseInfo.SUCCESS_STATUS);
         } else {
-            return Response.status(200).entity("{\"result\":\"ERROR\", \"tournamentId\":\"" + tournament.getId() + "\", \"message\":\"Unable to save Tournament\"}").build();
+            responseInfo.setStatus(ResponseInfo.ERROR_STATUS).setMessage("Unable to save tournament.");
         }
+        return Response.status(200).entity(responseInfo.toString()).build();
     }
 
     @GET

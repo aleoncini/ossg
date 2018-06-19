@@ -1,10 +1,6 @@
-package org.beccaria.ossg.model;
+package org.ossg.model;
 
 import org.bson.Document;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class Tournament {
     public final static int STABLEFORD_TYPE = 0;
@@ -74,12 +70,35 @@ public class Tournament {
 
     @Override
     public String toString(){
+        boolean notFirst = false;
         StringBuffer buffer = new StringBuffer();
         buffer.append("{ ");
-        buffer.append("\"id\": \"").append(id).append("\",");
-        buffer.append("\"ownerId\": \"").append(ownerId).append("\",");
-        buffer.append("\"title\": \"").append(title).append("\",");
-        buffer.append("\"dayOfEvent\": ").append(dayOfEvent.toString()).append(",");
+
+        if (id != null) {
+            buffer.append("\"id\":\"").append(id).append("\"");
+            notFirst = true;
+        }
+
+        if (ownerId != null){
+            if (notFirst) buffer.append(", ");
+            buffer.append("\"ownerId\":\"").append(ownerId).append("\"");
+            notFirst = true;
+        }
+
+        if (title != null){
+            if (notFirst) buffer.append(", ");
+            buffer.append("\"title\": \"").append(title).append("\"");
+            notFirst = true;
+        }
+
+        if (dayOfEvent != null){
+            if (notFirst) buffer.append(", ");
+            buffer.append("\"dayOfEvent\": ").append(dayOfEvent.toString());
+            notFirst = true;
+        }
+
+        if (notFirst) buffer.append(", ");
+
         buffer.append("\"isOpen\": ").append(this.isOpen).append(",");
         buffer.append("\"type\": ").append(this.type);
         buffer.append(" }");
@@ -112,6 +131,10 @@ public class Tournament {
                 .append("isOpen", this.isOpen)
                 .append("type", this.type);
         return doc;
+    }
+
+    public Tournament build(String jsonString){
+        return this.build(Document.parse(jsonString));
     }
 
     public Tournament build(Document document){

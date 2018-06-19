@@ -1,9 +1,9 @@
-package org.beccaria.ossg.model;
+package org.ossg.model;
 
 import java.util.Comparator;
 
 public class MedalResultComparator implements Comparator<Round>{
-    @Override
+
     public int compare(Round r1, Round r2) {
         int diff = r2.getScorecard().getNetMedal() - r1.getScorecard().getNetMedal();
         if (diff == 0){

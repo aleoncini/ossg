@@ -1,7 +1,7 @@
 package org.beccaria.ossg.persistence;
 
-import org.beccaria.ossg.model.Player;
 import org.bson.Document;
+import org.ossg.model.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;

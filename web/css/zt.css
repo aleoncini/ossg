@@ -112,6 +112,9 @@ table#tbl_courses {
 .round_tbl {
   text-align: center;
 }
+.round_tbl tbody tr:hover td {
+  background-color: #eeeeff;
+}
 .round_tbl_hrow {
   text-align: center;
   font-weight: bold;

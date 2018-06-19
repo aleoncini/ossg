@@ -1,7 +1,12 @@
 package org.beccaria.ossg.rest;
 
-import org.beccaria.ossg.model.*;
+import org.beccaria.ossg.model.ResponseInfo;
 import org.beccaria.ossg.persistence.RoundHelper;
+import org.bson.Document;
+import org.ossg.model.DayOfEvent;
+import org.ossg.model.Round;
+import org.ossg.model.Score;
+import org.ossg.model.Scorecard;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -71,6 +76,17 @@ public class Rounds {
     public Response deleteRound(@PathParam("id") String id) {
         ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.ERROR_STATUS);
         if (new RoundHelper().deleteRound(id)){
+            responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS);
+        }
+        return Response.status(200).entity(responseInfo.toString()).build();
+    }
+
+    @POST
+    @Produces("application/json")
+    @Path("/set/{id}")
+    public Response setTournament(@PathParam("id") String id, @QueryParam("tournamentid") String tournamentid) {
+        ResponseInfo responseInfo = new ResponseInfo().setStatus(ResponseInfo.ERROR_STATUS);
+        if (new RoundHelper().updateTournament(id, tournamentid)){
             responseInfo = new ResponseInfo().setStatus(ResponseInfo.SUCCESS_STATUS);
         }
         return Response.status(200).entity(responseInfo.toString()).build();
@@ -186,12 +202,20 @@ public class Rounds {
 
     @POST
     @Consumes("application/json")
+    @Path("/ads")
+    public Response addRoundString(String jsonString){
+        Round round = new Round().build(Document.parse(jsonString));
+        return this.addRound(round);
+    }
+
+    @POST
+    @Consumes("application/json")
     @Path("/add")
     public Response addRound(Round round){
         if (new RoundHelper().save(round)){
             return Response.status(200).entity("{\"result\":\"success\", \"roundId\":\"" + round.getId() + "\", \"message\":\"OK\"}").build();
         } else {
-            return Response.status(200).entity("{\"result\":\"ERROR\", \"courseId\":\"" + round.getId() + "\", \"message\":\"Unable to save round\"}").build();
+            return Response.status(200).entity("{\"result\":\"ERROR\", \"roundId\":\"" + round.getId() + "\", \"message\":\"Unable to save round\"}").build();
         }
     }
 
@@ -232,6 +256,19 @@ public class Rounds {
         Collection<Round> rounds = new RoundHelper().search(playerid, tournamentid, courseid, year, month, day);
         if (rounds.size() > 0){
             return Response.status(200).entity(collectionToJson(rounds)).build();
+        }
+        return Response.status(404).build();
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("/list")
+    public Response list(@QueryParam("playerid") String playerid,
+                           @QueryParam("year") int year,
+                           @QueryParam("month") int month){
+        Collection<Round> rounds = new RoundHelper().search(playerid, null, null, year, month, 0);
+        if (rounds.size() > 0){
+            return Response.status(200).entity(leaderboardToJson(rounds)).build();
         }
         return Response.status(404).build();
     }

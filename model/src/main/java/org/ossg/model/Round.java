@@ -1,4 +1,4 @@
-package org.beccaria.ossg.model;
+package org.ossg.model;
 
 import org.bson.Document;
 
@@ -115,7 +115,7 @@ public class Round implements Comparable<Round>{
             buffer.append("\"tournamentId\": \"").append(tournamentId).append("\"");
         }
         buffer.append(", ");
-        buffer.append("\"isNineHole\": \"").append(isNineHole).append("\"");
+        buffer.append("\"isNineHole\": ").append(isNineHole);
         buffer.append(", ");
         buffer.append("\"course\": ").append(course.toString());
         buffer.append(", ");
@@ -141,7 +141,7 @@ public class Round implements Comparable<Round>{
             buffer.append("\"tournamentId\": \"").append(tournamentId).append("\"");
         }
         buffer.append(", \n");
-        buffer.append("\"isNineHole\": \"").append(isNineHole).append("\"");
+        buffer.append("\"isNineHole\": ").append(isNineHole);
         buffer.append(", \n");
         buffer.append("\"course\": ").append(course.toString());
         buffer.append(", \n");
@@ -157,11 +157,15 @@ public class Round implements Comparable<Round>{
         buffer.append(", ");
         buffer.append("\"playerName\": \"").append(playerName).append("\"");
         buffer.append(", ");
+        buffer.append("\"dayOfEvent\": \"").append(dayOfEvent.text()).append("\"");
+        buffer.append(", ");
         buffer.append("\"course\": \"").append(course.getName()).append("\"");
         buffer.append(", ");
         buffer.append("\"phcp\": \"").append(scorecard.getPhcp()).append("\"");
         buffer.append(", ");
         buffer.append("\"stb\": \"").append(scorecard.getStableford()).append("\"");
+        buffer.append(", ");
+        buffer.append("\"mdl\": \"").append(scorecard.getMedal()).append("\"");
         buffer.append(" }");
         return  buffer.toString();
     }
@@ -202,7 +206,6 @@ public class Round implements Comparable<Round>{
         return this;
     }
 
-    @Override
     public int compareTo(Round other) {
         int diff = this.getScorecard().getStableford() - other.getScorecard().getStableford();
         if (diff == 0){

@@ -1,7 +1,7 @@
 package org.beccaria.ossg.persistence;
 
-import org.beccaria.ossg.model.*;
 import org.bson.Document;
+import org.ossg.model.*;
 
 import java.util.*;
 
@@ -9,6 +9,9 @@ public class RoundHelper {
     public static String COLLECTION_NAME = "rounds";
 
     public boolean save(Round round){
+        if (round.getId() == null || round.getId().length() == 0 || round.getId().equalsIgnoreCase("null")){
+            round.setId(UUID.randomUUID().toString().replace("-", ""));
+        }
         return DBTools.save(COLLECTION_NAME, round.getDocument());
     }
 
@@ -36,7 +39,7 @@ public class RoundHelper {
         if (day > 0){
             filter.append("dayOfEvent.day", day);
         }
-        System.out.println("=====> " + filter.toJson());
+        //System.out.println("=====> " + filter.toJson());
         Iterator<Document> docs = DBTools.searchByFilter("rounds", filter);
         Collection<Round> rounds = new ArrayList<Round>();
         while (docs.hasNext()){
@@ -69,6 +72,14 @@ public class RoundHelper {
             return round;
         }
         return null;
+    }
+
+    public boolean updateTournament(String roundId, String tournamentId){
+        Document filter = new Document("id",roundId);
+        Document values = new Document("tournamentId", tournamentId);
+        values.append("type",Round.ROUND_TYPE_TOURNAMENT);
+        Document set = new Document("$set",values);
+        return DBTools.update(RoundHelper.COLLECTION_NAME,filter,set);
     }
 
     public boolean saveHole(String roundId, String holeId, Score score){

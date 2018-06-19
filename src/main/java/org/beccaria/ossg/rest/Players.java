@@ -1,20 +1,18 @@
 package org.beccaria.ossg.rest;
 
-import org.beccaria.ossg.model.Player;
 import org.beccaria.ossg.model.ResponseInfo;
 import org.beccaria.ossg.persistence.PlayerHelper;
+import org.bson.Document;
+import org.ossg.model.Player;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
-
 import java.io.UnsupportedEncodingException;
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Logger;
-
 import java.util.Base64;
+import java.util.Collection;
+import java.util.logging.Logger;
 
 @Path("/rs/players")
 public class Players {
@@ -28,7 +26,7 @@ public class Players {
     @GET
     @Produces("application/json")
     @Path("/player/{id}")
-    public Response checkEmail(@PathParam("id") String id) {
+    public Response getPlayerById(@PathParam("id") String id) {
         Player player = new PlayerHelper().getById(id);
         if (player == null){
             return Response.status(404).build();
@@ -75,6 +73,14 @@ public class Players {
             }
         }
         return Response.status(200).entity("{\"id\":\"none\"}").build();
+    }
+
+    @POST
+    @Consumes("application/json")
+    @Path("/ads")
+    public Response addPlayerString(String jsonString){
+        Player player = new Player().build(Document.parse(jsonString));
+        return this.addPlayer(player);
     }
 
     @POST

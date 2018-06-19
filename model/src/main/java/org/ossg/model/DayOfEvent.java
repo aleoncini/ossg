@@ -1,4 +1,4 @@
-package org.beccaria.ossg.model;
+package org.ossg.model;
 
 import org.bson.Document;
 
@@ -43,6 +43,10 @@ public class DayOfEvent {
         return this;
     }
 
+    public boolean isEqual(DayOfEvent doe){
+        return ((this.year == doe.year) && (this.month == doe.month) && (this.day == doe.day));
+    }
+
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
@@ -51,6 +55,39 @@ public class DayOfEvent {
         buffer.append("\"month\": ").append(month).append(", ");
         buffer.append("\"year\": ").append(year).append(" }");
         return  buffer.toString();
+    }
+
+    public String text() {
+        return new StringBuffer().append(day).append(" ").append(getMonthName()).append(" ").append(year).toString();
+    }
+
+    private String getMonthName() {
+        switch(month) {
+            case 1:
+                return "Jan";
+            case 2:
+                return "Feb";
+            case 3:
+                return "Mar";
+            case 4:
+                return "Apr";
+            case 5:
+                return "May";
+            case 6:
+                return "Jun";
+            case 7:
+                return "Jul";
+            case 8:
+                return "Aug";
+            case 9:
+                return "Sep";
+            case 10:
+                return "Oct";
+            case 11:
+                return "Nov";
+            default:
+                return "Dic";
+        }
     }
 
     public String prettyPrint() {
@@ -73,6 +110,15 @@ public class DayOfEvent {
         this.day = doc.getInteger("day");
         this.month = doc.getInteger("month");
         this.year = doc.getInteger("year");
+        return this;
+    }
+
+    public DayOfEvent build(String date){
+        // This method can be used in case the date string is in the format:
+        // DD/MM/YYYY
+        this.day = Integer.parseInt(date.substring(0,2));
+        this.month = Integer.parseInt(date.substring(3,5));
+        this.year = Integer.parseInt(date.substring(6,10));
         return this;
     }
 
