@@ -168,3 +168,38 @@ table#tbl_courses {
   text-align: left;
   font-weight: bold;
 }
+
+.archive-template {
+  padding: 2rem 4rem;
+  text-align: left;
+}
+.partially-transparent {
+  background:rgba(255,255,255,0.3);
+}
+
+.tbl_archive {
+  font-size: 10px;
+}
+
+.tbl_win {
+  font-size: 10px;
+  font-weight: bold;
+  color: #A30000;
+}
+
+.arch {
+  font-size: 0.8em;
+}
+
+.arch_h {
+  font-size: 0.8em;
+  font-weight: bold;
+  color: #A30000;
+}
+
+.cp-text {
+  font-size: 8px;
+  text-align: center;
+  color: rgba(0,0,0,.7);
+  text-shadow: 0 1px rgba(255, 255, 255, 0.1);
+}

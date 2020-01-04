@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-@Path("/rs/tournaments")
+@Path("/tournament")
 public class Tournaments {
     private static final Logger logger = Logger.getLogger("org.ossg");
 
@@ -20,13 +20,14 @@ public class Tournaments {
 
     @GET
     @Produces("application/json")
-    @Path("/tournament/{id}")
+    @Path("{id}")
     public Response getTournament(@PathParam("id") String id) {
         Tournament tournament = new TournamentHelper().get(id);
         if (tournament == null){
             return Response.status(404).build();
         } else {
-            return Response.status(200).entity(tournament.toString()).build();
+            Response.ResponseBuilder responseBuilder = Response.ok(tournament.toString());
+            return responseBuilder.header("Access-Control-Allow-Origin", "http://www.zingarotour.org").build();
         }
     }
 

@@ -2,26 +2,28 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>org.beccaria</groupId>
   <artifactId>ossg</artifactId>
   <name>Open Source Social Golf</name>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>2.0.1</version>
   <packaging>war</packaging>
 
   <properties>
-    <version.wildfly.swarm>2017.12.1</version.wildfly.swarm>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <version.thorntail>2.6.0.Final</version.thorntail>
   </properties>
 
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.wildfly.swarm</groupId>
+        <groupId>io.thorntail</groupId>
         <artifactId>bom-all</artifactId>
-        <version>${version.wildfly.swarm}</version>
+        <version>${version.thorntail}</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -29,13 +31,14 @@
   </dependencyManagement>
 
   <build>
-    <finalName>ossg</finalName>
+    <finalName>${project.artifactId}-${project.version}</finalName>
+
     <plugins>
       <plugin>
-        <groupId>org.wildfly.swarm</groupId>
-        <artifactId>wildfly-swarm-plugin</artifactId>
-        <version>${version.wildfly.swarm}</version>
-        
+        <groupId>io.thorntail</groupId>
+        <artifactId>thorntail-maven-plugin</artifactId>
+        <version>${version.thorntail}</version>
+
         <executions>
           <execution>
             <goals>
@@ -48,18 +51,6 @@
   </build>
 
   <dependencies>
-    <!-- Java EE 7 dependency -->
-    <dependency>
-      <groupId>javax</groupId>
-      <artifactId>javaee-api</artifactId>
-      <version>7.0</version>
-      <scope>provided</scope>
-    </dependency>
-    <!-- WildFly Swarm Fractions -->
-    <dependency>
-      <groupId>org.wildfly.swarm</groupId>
-      <artifactId>jaxrs</artifactId>
-    </dependency>
     <!-- Project dependencies -->
     <dependency>
       <groupId>org.ossg</groupId>
@@ -67,14 +58,19 @@
       <version>1.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>org.mongodb</groupId>
-      <artifactId>mongo-java-driver</artifactId>
-      <version>3.5.0</version>
+      <groupId>io.thorntail</groupId>
+      <artifactId>jaxrs</artifactId>
     </dependency>
-      <dependency>
-          <groupId>commons-codec</groupId>
-          <artifactId>commons-codec</artifactId>
-          <version>1.3</version>
-      </dependency>
+    <dependency>
+      <groupId>io.thorntail</groupId>
+      <artifactId>mongodb</artifactId>
+    </dependency>
+    <!--
+    <dependency>
+        <groupId>commons-codec</groupId>
+        <artifactId>commons-codec</artifactId>
+        <version>1.3</version>
+    </dependency>
+    -->
   </dependencies>
 </project>

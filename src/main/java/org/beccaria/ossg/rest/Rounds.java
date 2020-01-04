@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Path("/rs/rounds")
+@Path("/rounds")
 public class Rounds {
     private static final Logger logger = Logger.getLogger("org.ossg");
 
@@ -26,7 +26,7 @@ public class Rounds {
 
     @GET
     @Produces("application/json")
-    @Path("/round/{id}")
+    @Path("{id}")
     public Response getRound(@PathParam("id") String id) {
         Round round = new RoundHelper().getById(id);
         if (round == null){
@@ -226,20 +226,6 @@ public class Rounds {
         Collection<Round> rounds = new RoundHelper().searchByFieldId("playerId",id);
         if (rounds.size() > 0){
             return Response.status(200).entity(rounds).build();
-        }
-        return Response.status(404).build();
-    }
-
-    @GET
-    @Produces("application/json")
-    @Path("/leaderboard/{id}")
-    public Response listByTournamentId(@PathParam("id") String tournamentId) {
-        Collection<Round> rounds = new RoundHelper().searchByFieldId("tournamentId", tournamentId);
-        if (rounds.size() > 0){
-            List<Round> ordered = new RoundHelper().orderByStableford(rounds);
-            //to have descending order
-            Collections.reverse(ordered);
-            return Response.status(200).entity(leaderboardToJson(ordered)).build();
         }
         return Response.status(404).build();
     }
