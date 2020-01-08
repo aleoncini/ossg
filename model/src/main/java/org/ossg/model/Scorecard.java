@@ -45,6 +45,10 @@ public class Scorecard {
         return this;
     }
 
+    public Score getScore(int holeNumber) {
+        return scores.get("" + holeNumber);
+    }
+
     public Scorecard setScore(int holeNumber, Score score) {
         if (this.phcp != 0){
             score.calculatePoints(phcp);
