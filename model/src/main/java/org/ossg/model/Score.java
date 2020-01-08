@@ -3,12 +3,33 @@ package org.ossg.model;
 import org.bson.Document;
 
 public class Score {
+    private int par = 0;
+    private int hcp = 0;
     private int strokes = 0;
+    private int distance = 0;
     private int putts = 0;
     private boolean fareway = false;
     private int bunkers = 0;
     private int penalties = 0;
     private int points = 0;
+
+    public int getPar() {
+        return par;
+    }
+
+    public Score setPar(int par) {
+        this.par = par;
+        return this;
+    }
+
+    public int getHcp() {
+        return hcp;
+    }
+
+    public Score setHcp(int hcp) {
+        this.hcp = hcp;
+        return this;
+    }
 
     public int getStrokes() {
         return strokes;
@@ -16,6 +37,15 @@ public class Score {
 
     public Score setStrokes(int strokes) {
         this.strokes = strokes;
+        return this;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public Score setDistance(int distance) {
+        this.distance = distance;
         return this;
     }
 
@@ -68,6 +98,10 @@ public class Score {
     public String toString(){
         StringBuffer buffer = new StringBuffer();
         buffer.append("{ ");
+        buffer.append("\"par\": ").append(par);
+        buffer.append(", ");
+        buffer.append("\"hcp\": ").append(hcp);
+        buffer.append(", ");
         buffer.append("\"strokes\": ").append(strokes);
         buffer.append(", ");
         buffer.append("\"putts\": ").append(putts);
@@ -86,6 +120,10 @@ public class Score {
     public String prettyPrint(){
         StringBuffer buffer = new StringBuffer();
         buffer.append("\n{ \n");
+        buffer.append("\"par\": ").append(par);
+        buffer.append(", \n");
+        buffer.append("\"hcp\": ").append(hcp);
+        buffer.append(", \n");
         buffer.append("\"strokes\": ").append(strokes);
         buffer.append(", \n");
         buffer.append("\"putts\": ").append(putts);
@@ -102,7 +140,9 @@ public class Score {
     }
 
     public Document getDocument(){
-        return new Document("strokes", this.strokes)
+        return new Document("par", this.par)
+                .append("hcp", this.hcp)
+                .append("strokes", this.strokes)
                 .append("putts", this.putts)
                 .append("fareway", this.fareway)
                 .append("penalties", this.penalties)
@@ -111,6 +151,8 @@ public class Score {
     }
 
     public Score build(Document document){
+        this.par = document.getInteger("par");
+        this.hcp = document.getInteger("hcp");
         this.strokes = document.getInteger("strokes");
         if (document.getInteger("putts") != null){
             this.putts = document.getInteger("putts");
@@ -141,6 +183,31 @@ public class Score {
         this.setPenalties(Integer.parseInt(data[5]));
         this.setFareway(Boolean.parseBoolean(data[6]));
         return this;
+    }
+
+    private int calculateAdditionalStrokes(int phcp){
+        if (phcp == 18){
+            return 1;
+        }
+        if (phcp > 18){
+            if ((phcp - 18) >= hcp) {
+                return 2;
+            } else {
+                return 1;
+            }
+        }
+        if (phcp >= hcp){
+            return 1;
+        }
+        return 0;
+    }
+
+    public void calculatePoints(int phcp){
+        int stb = ((par + calculateAdditionalStrokes(phcp)) - strokes) + 2;
+        if (stb < 0){
+            stb = 0;
+        }
+        this.points = stb;
     }
 
 }

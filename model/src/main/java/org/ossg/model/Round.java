@@ -13,6 +13,8 @@ public class Round implements Comparable<Round>{
     private String type = ROUND_TYPE_PRACTICE;
     private String tournamentId = "";
     private boolean isNineHole = false;
+    private String courseId;
+    private String courseName;
     private Course course;
     private Scorecard scorecard;
 

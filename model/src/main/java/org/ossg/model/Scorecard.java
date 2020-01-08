@@ -46,6 +46,9 @@ public class Scorecard {
     }
 
     public Scorecard setScore(int holeNumber, Score score) {
+        if (this.phcp != 0){
+            score.calculatePoints(phcp);
+        }
         scores.put(Integer.toString(holeNumber), score);
         return this;
     }
