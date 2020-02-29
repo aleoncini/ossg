@@ -1,4 +1,4 @@
-package org.ossg.model;
+package org.beccaria.ossg.model;
 
 import org.bson.Document;
 
@@ -115,11 +115,11 @@ public class Score {
             buffer.append(", ");
             buffer.append("\"distance\": ").append(distance);
         }
-        if (bunkers >= 0){
+        if (bunkers > 0){
             buffer.append(", ");
             buffer.append("\"bunkers\": ").append(bunkers);
         }
-        if (penalties >= 0){
+        if (penalties > 0){
             buffer.append(", ");
             buffer.append("\"penalties\": ").append(penalties);
         }
@@ -132,28 +132,6 @@ public class Score {
             buffer.append("\"points\": ").append(points);
         }
         buffer.append(" }");
-        return  buffer.toString();
-    }
-
-    public String prettyPrint(){
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("\n{ \n");
-        buffer.append("\"par\": ").append(par);
-        buffer.append(", \n");
-        buffer.append("\"hcp\": ").append(hcp);
-        buffer.append(", \n");
-        buffer.append("\"strokes\": ").append(strokes);
-        buffer.append(", \n");
-        buffer.append("\"putts\": ").append(putts);
-        buffer.append(", \n");
-        buffer.append("\"bunkers\": ").append(bunkers);
-        buffer.append(", \n");
-        buffer.append("\"penalties\": ").append(penalties);
-        buffer.append(", \n");
-        buffer.append("\"fareway\": ").append(fareway);
-        buffer.append(", \n");
-        buffer.append("\"points\": ").append(points);
-        buffer.append("\n }\n");
         return  buffer.toString();
     }
 
@@ -174,10 +152,10 @@ public class Score {
         if (fareway){
             d.append("fareway", this.fareway);
         }
-        if (penalties >= 0){
+        if (penalties > 0){
             d.append("penalties", this.penalties);
         }
-        if (bunkers >= 0){
+        if (bunkers > 0){
             d.append("bunkers", this.bunkers);
         }
         if (points >= 0){
@@ -197,7 +175,7 @@ public class Score {
         if (document.get("distance") != null){
             this.distance = document.getInteger("distance");
         }
-        if (document.getInteger("bunkers") != null){
+        if (document.getInteger("putts") != null){
             this.putts = document.getInteger("putts");
         }
         if (document.getInteger("bunkers") != null){
@@ -212,19 +190,6 @@ public class Score {
         if (document.getInteger("points") != null){
             this.points = document.getInteger("points");
         }
-        return this;
-    }
-
-    public Score build(String score){
-        // HOLE, strokes, putts, points, bunkers, penalties, fareway
-        String data_delimiter = "_";
-        String[] data = score.split(data_delimiter);
-        this.setStrokes(Integer.parseInt(data[1]));
-        this.setPutts(Integer.parseInt(data[2]));
-        this.setPoints(Integer.parseInt(data[3]));
-        this.setBunkers(Integer.parseInt(data[4]));
-        this.setPenalties(Integer.parseInt(data[5]));
-        this.setFareway(Boolean.parseBoolean(data[6]));
         return this;
     }
 

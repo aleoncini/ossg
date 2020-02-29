@@ -75,6 +75,10 @@ public class DBTools {
         return update(collectionName, filter, set);
     }
 
+    public static Iterator<Document> getAll(String collectionName) {
+        return DBConfiguration.getInstance().getDatabase().getCollection(collectionName).find().iterator();
+    }
+
     public static Document getById(String collectionName, String id) {
         return DBConfiguration.getInstance().getDatabase().getCollection(collectionName).find(eq("id", id)).first();
     }

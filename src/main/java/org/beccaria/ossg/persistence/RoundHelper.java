@@ -1,7 +1,7 @@
 package org.beccaria.ossg.persistence;
 
+import org.beccaria.ossg.model.*;
 import org.bson.Document;
-import org.ossg.model.*;
 
 import java.util.*;
 
@@ -48,32 +48,6 @@ public class RoundHelper {
         return rounds;
     }
 
-    public Round initializeNewRound(String playerId, int phcp, String courseId, String tournamentId){
-        DayOfEvent dayOfEvent = new DayOfEvent().today();
-        return initializeNewRound(playerId, phcp, courseId, tournamentId, dayOfEvent);
-    }
-
-    public Round initializeNewRound(String playerId, int phcp, String courseId, String tournamentId, DayOfEvent dayOfEvent){
-        String id = UUID.randomUUID().toString().replace("-", "");
-        Player player = new PlayerHelper().getById(playerId);
-        Course course = new CourseHelper().getById(courseId);
-        Scorecard scorecard = new Scorecard().setPhcp(phcp);
-        Round round = new Round()
-                .setId(id)
-                .setDayOfEvent(dayOfEvent)
-                .setPlayerId(playerId)
-                .setPlayerName(player.getName())
-                .setCourse(course)
-                .setScorecard(scorecard);
-        if (tournamentId != null){
-            round.setType(Round.ROUND_TYPE_TOURNAMENT).setTournamentId(tournamentId);
-        }
-        if (DBTools.save(COLLECTION_NAME, round.getDocument())){
-            return round;
-        }
-        return null;
-    }
-
     public boolean updateTournament(String roundId, String tournamentId){
         Document filter = new Document("id",roundId);
         Document values = new Document("tournamentId", tournamentId);
@@ -110,7 +84,6 @@ public class RoundHelper {
     }
 
     public boolean saveDayOfEvent(String roundId, DayOfEvent doe){
-        System.out.println("=====> " + roundId + " - " + doe.prettyPrint());
         Document filter = new Document("id",roundId);
         Document values = new Document();
         values.append("dayOfEvent.day",doe.getDay());
@@ -136,6 +109,20 @@ public class RoundHelper {
             rounds.add(new Round().build(docs.next()));
         }
         return rounds;
+    }
+
+    public Collection<Round> getAll(){
+        Collection<Round> rounds = new ArrayList<Round>();
+        Iterator<Document> docs = DBTools.getAll(COLLECTION_NAME);
+        Document doc = null;
+        while (docs.hasNext()){
+            rounds.add(new Round().build(docs.next()));
+        }
+        return rounds;
+    }
+
+    public boolean newRoundExists(String id){
+        return DBTools.getById("newrounds", id) != null;
     }
 
     public boolean roundExists(String playerid, String courseid, DayOfEvent dayOfEvent){

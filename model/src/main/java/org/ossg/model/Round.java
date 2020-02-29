@@ -188,7 +188,14 @@ public class Round implements Comparable<Round>{
     }
 
     public Round build(Document roundDocument){
+        this.id = roundDocument.getString("id");
+
         Document dayOfEventDocument = (Document) roundDocument.get("dayOfEvent");
+        this.dayOfEvent = new DayOfEvent().build(dayOfEventDocument);
+
+        this.playerId = roundDocument.getString("playerId");
+        this.playerName = roundDocument.getString("playerName");
+
         Document courseDocument = (Document) roundDocument.get("course");
         Document scorecardDocument = (Document) roundDocument.get("scorecard");
 
@@ -196,10 +203,6 @@ public class Round implements Comparable<Round>{
             this.setNineHole();
         }
 
-        this.id = roundDocument.getString("id");
-        this.dayOfEvent = new DayOfEvent().build(dayOfEventDocument);
-        this.playerId = roundDocument.getString("playerId");
-        this.playerName = roundDocument.getString("playerName");
         this.type = roundDocument.getString("type");
         this.tournamentId = roundDocument.getString("tournamentId");
         this.course = new Course().build(courseDocument);

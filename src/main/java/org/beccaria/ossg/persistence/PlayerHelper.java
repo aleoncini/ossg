@@ -1,7 +1,7 @@
 package org.beccaria.ossg.persistence;
 
+import org.beccaria.ossg.model.Player;
 import org.bson.Document;
-import org.ossg.model.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,6 +37,15 @@ public class PlayerHelper {
     public Collection<Player> searchByName(String name){
         Collection<Player> players = new ArrayList<Player>();
         Iterator<Document> docs = DBTools.search(COLLECTION_NAME,"name",name);
+        while (docs.hasNext()){
+            players.add(new Player().build(docs.next()));
+        }
+        return players;
+    }
+
+    public Collection<Player> list(){
+        Collection<Player> players = new ArrayList<Player>();
+        Iterator<Document> docs = DBTools.getAll(COLLECTION_NAME);
         while (docs.hasNext()){
             players.add(new Player().build(docs.next()));
         }

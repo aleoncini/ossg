@@ -108,7 +108,7 @@ function completeUserRegistration(email, name) {
  *
  */
 function createTournament() {
-    var theUrl = '/rs/tournaments/ads';
+    var theUrl = '/svc/tournament/ads';
     var theData = buildTournamentString();
     console.log("==> " + theData);
     $.ajax({
@@ -132,7 +132,6 @@ function buildTournamentString() {
     doe.year = Number( $('#sel_tournament_year option:selected').text() );
 
     var data = {};
-    data.ownerId = getPlayerId();
     data.title = $('#inp_tournament_title').val();
     data.dayOfEvent = doe;
     data.isOpen = true;

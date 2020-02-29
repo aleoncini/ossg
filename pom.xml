@@ -53,11 +53,6 @@
   <dependencies>
     <!-- Project dependencies -->
     <dependency>
-      <groupId>org.ossg</groupId>
-      <artifactId>model</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
-    </dependency>
-    <dependency>
       <groupId>io.thorntail</groupId>
       <artifactId>jaxrs</artifactId>
     </dependency>
@@ -65,12 +60,16 @@
       <groupId>io.thorntail</groupId>
       <artifactId>mongodb</artifactId>
     </dependency>
-    <!--
     <dependency>
-        <groupId>commons-codec</groupId>
-        <artifactId>commons-codec</artifactId>
-        <version>1.3</version>
+      <!-- jsoup HTML parser library @ https://jsoup.org/ -->
+      <groupId>org.jsoup</groupId>
+      <artifactId>jsoup</artifactId>
+      <version>1.12.1</version>
     </dependency>
-    -->
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>3.5.0</version>
+    </dependency>
   </dependencies>
 </project>

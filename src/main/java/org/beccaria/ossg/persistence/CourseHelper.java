@@ -1,7 +1,8 @@
 package org.beccaria.ossg.persistence;
 
+import org.beccaria.ossg.model.Course;
+import org.beccaria.ossg.model.Player;
 import org.bson.Document;
-import org.ossg.model.Course;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,4 +35,14 @@ public class CourseHelper {
         }
         return courses;
     }
+
+    public Collection<Course> list(){
+        Collection<Course> courses = new ArrayList<Course>();
+        Iterator<Document> docs = DBTools.getAll(COLLECTION_NAME);
+        while (docs.hasNext()){
+            courses.add(new Course().build(docs.next()));
+        }
+        return courses;
+    }
+
 }

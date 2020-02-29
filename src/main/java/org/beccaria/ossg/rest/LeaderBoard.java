@@ -1,9 +1,7 @@
 package org.beccaria.ossg.rest;
 
+import org.beccaria.ossg.model.Round;
 import org.beccaria.ossg.persistence.RoundHelper;
-import org.beccaria.ossg.persistence.TournamentHelper;
-import org.ossg.model.Round;
-import org.ossg.model.Tournament;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

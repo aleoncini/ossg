@@ -1,7 +1,6 @@
-package org.ossg.model;
+package org.beccaria.ossg.model;
 
 import org.bson.Document;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,16 +34,6 @@ public class Scorecard {
         return this;
     }
 
-    public Scorecard setScores(String scoresString) {
-        // HOLE, strokes, putts, points, bunkers, penalties, fareway
-        String hole_delimiter = "-";
-        String[] holes = scoresString.split(hole_delimiter);
-        for (String hole : holes) {
-            this.setScore(hole);
-        }
-        return this;
-    }
-
     public Score getScore(int holeNumber) {
         return scores.get(Integer.toString(holeNumber));
     }
@@ -54,15 +43,6 @@ public class Scorecard {
             score.calculatePoints(phcp);
         }
         scores.put(Integer.toString(holeNumber), score);
-        return this;
-    }
-
-    public Scorecard setScore(String scoreString) {
-        String data_delimiter = "_";
-        String[] data = scoreString.split(data_delimiter);
-        int holeNumber = Integer.parseInt(data[0]);
-        Score score = new Score().build(scoreString);
-        this.setScore(holeNumber,score);
         return this;
     }
 
@@ -81,22 +61,6 @@ public class Scorecard {
             buffer.append("\"").append(i).append("\": ").append(scores.get(Integer.toString(i)).toString());
         }
         buffer.append(" } }");
-        return  buffer.toString();
-    }
-
-    public String prettyPrint(){
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("\n{ \n");
-        buffer.append("\"phcp\": ").append(phcp);
-        buffer.append(", \n");
-        buffer.append("\"scores\": { \n");
-        for (int i =1; i<=18; i++) {
-            if (i>1){
-                buffer.append(", \n");
-            }
-            buffer.append("\"").append(i).append("\": ").append(scores.get(Integer.toString(i)).toString());
-        }
-        buffer.append(" }\n }\n");
         return  buffer.toString();
     }
 
@@ -119,9 +83,9 @@ public class Scorecard {
         if (document.get("phcp") != null){
             this.phcp = document.getInteger("phcp");
         }
-        Document scoreDocuments = (Document) document.get("scores");
+        Document scoresDocument = (Document) document.get("scores");
         for (int i=1; i<=18; i++){
-            Document scoreDocument = (Document) scoreDocuments.get(Integer.toString(i));
+            Document scoreDocument = (Document) scoresDocument.get(Integer.toString(i));
             Score score = new Score().build(scoreDocument);
             this.setScore(i, score);
         }
@@ -145,6 +109,9 @@ public class Scorecard {
     }
 
     public int getStableford(){
+        if (phcp < 0){
+            return 0;
+        }
         int stb = 0;
         for (int i =1; i<=18; i++) {
             stb += scores.get(Integer.toString(i)).getPoints();
